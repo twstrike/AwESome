@@ -1,20 +1,24 @@
 package aes_test
 
 import (
+	"github.com/twstrike/AwESome/aes"
+	. "gopkg.in/check.v1"
 	"strings"
 	"testing"
-	. "gopkg.in/check.v1"
 )
 
 func Test(t *testing.T) { TestingT(t) }
 
 type GladmanAESSuite struct{}
+
 var _ = Suite(&GladmanAESSuite{})
 
 type StandardAESSuite struct{}
+
 var _ = Suite(&StandardAESSuite{})
 
 type SimpleSuite struct{}
+
 var _ = Suite(&SimpleSuite{})
 
 func (s *SimpleSuite) SetUpSuite(c *C) {
@@ -46,19 +50,19 @@ var testGladman128Encrypting = []string{
 }
 
 var testGladman128Decrypting = []string{
-    "Ciphertext:     39 25 84 1d 02 dc 09 fb dc 11 85 97 19 6a 0b 32",
-    "Key:            2b 7e 15 16 28 ae d2 a6 ab f7 15 88 09 cf 4f 3c",
-    "Start round  1: e9 31 7d b5 cb 32 2c 72 3d 2e 89 5f af 09 07 94",
-    "Start round  2: 87 6e 46 a6 f2 4c e7 8c 4d 90 4a d8 97 ec c3 95",
-    "Start round  3: be 3b d4 fe d4 e1 f2 c8 0a 64 2c c0 da 83 86 4d",
-    "Start round  4: f7 83 40 3f 27 43 3d f0 9b b5 31 ff 54 ab a9 d3",
-    "Start round  5: a1 4f 3d fe 78 e8 03 fc 10 d5 a8 df 4c 63 29 23",
-    "Start round  6: e1 fb 96 7c e8 c8 ae 9b 35 6c d2 ba 97 4f fb 53",
-    "Start round  7: 52 a4 c8 94 85 11 6a 28 e3 cf 2f d7 f6 50 5e 07",
-    "Start round  8: ac c1 d6 b8 ef b5 5a 7b 13 23 cf df 45 73 11 b5",
-    "Start round  9: 49 db 87 3b 45 39 53 89 7f 02 d2 f1 77 de 96 1a",
-    "Start round 10: d4 bf 5d 30 e0 b4 52 ae b8 41 11 f1 1e 27 98 e5",
-    "Plaintext:      32 43 f6 a8 88 5a 30 8d 31 31 98 a2 e0 37 07 34",
+	"Ciphertext:     39 25 84 1d 02 dc 09 fb dc 11 85 97 19 6a 0b 32",
+	"Key:            2b 7e 15 16 28 ae d2 a6 ab f7 15 88 09 cf 4f 3c",
+	"Start round  1: e9 31 7d b5 cb 32 2c 72 3d 2e 89 5f af 09 07 94",
+	"Start round  2: 87 6e 46 a6 f2 4c e7 8c 4d 90 4a d8 97 ec c3 95",
+	"Start round  3: be 3b d4 fe d4 e1 f2 c8 0a 64 2c c0 da 83 86 4d",
+	"Start round  4: f7 83 40 3f 27 43 3d f0 9b b5 31 ff 54 ab a9 d3",
+	"Start round  5: a1 4f 3d fe 78 e8 03 fc 10 d5 a8 df 4c 63 29 23",
+	"Start round  6: e1 fb 96 7c e8 c8 ae 9b 35 6c d2 ba 97 4f fb 53",
+	"Start round  7: 52 a4 c8 94 85 11 6a 28 e3 cf 2f d7 f6 50 5e 07",
+	"Start round  8: ac c1 d6 b8 ef b5 5a 7b 13 23 cf df 45 73 11 b5",
+	"Start round  9: 49 db 87 3b 45 39 53 89 7f 02 d2 f1 77 de 96 1a",
+	"Start round 10: d4 bf 5d 30 e0 b4 52 ae b8 41 11 f1 1e 27 98 e5",
+	"Plaintext:      32 43 f6 a8 88 5a 30 8d 31 31 98 a2 e0 37 07 34",
 }
 
 var testGladman192Encrypting = []string{
@@ -341,9 +345,8 @@ var testPlainOne128Decrypting = []string{
 	"Plaintext:      00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01",
 }
 
-
 type EncryptionTest struct {
-	plaintext,  key, expected string
+	plaintext, key, expected string
 }
 
 type DecryptionTest struct {
@@ -355,7 +358,7 @@ func extractDataFrom(data string) string {
 }
 
 func encrypt(plain, key string) string {
-	return ""
+	return string(aes.EncryptHex(aes.HexString(key), aes.HexString(plain)))
 }
 
 func decrypt(cipher, key string) string {
@@ -363,15 +366,15 @@ func decrypt(cipher, key string) string {
 }
 
 func parseEncryptionData(data []string) EncryptionTest {
-	plain    := extractDataFrom(data[0])
-	key      := extractDataFrom(data[1])
+	plain := extractDataFrom(data[0])
+	key := extractDataFrom(data[1])
 	expected := extractDataFrom(data[len(data)-1])
 	return EncryptionTest{plain, key, expected}
 }
 
 func parseDecryptionData(data []string) DecryptionTest {
-	cipher   := extractDataFrom(data[0])
-	key      := extractDataFrom(data[1])
+	cipher := extractDataFrom(data[0])
+	key := extractDataFrom(data[1])
 	expected := extractDataFrom(data[len(data)-1])
 	return DecryptionTest{cipher, key, expected}
 }
@@ -412,7 +415,6 @@ func (s *GladmanAESSuite) TestGladman256Decrypting(c *C) {
 	testDecryptingOn(testGladman256Decrypting, c)
 }
 
-
 func (s *StandardAESSuite) TestStandard128Encrypting(c *C) {
 	testEncryptingOn(testAES128Encrypting, c)
 }
@@ -436,7 +438,6 @@ func (s *StandardAESSuite) TestStandard256Encrypting(c *C) {
 func (s *StandardAESSuite) TestStandard256Decrypting(c *C) {
 	testDecryptingOn(testAES256Decrypting, c)
 }
-
 
 func (s *SimpleSuite) TestAllZeroes128Encrypting(c *C) {
 	testEncryptingOn(testAllZeroes128Encrypting, c)
