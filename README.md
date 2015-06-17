@@ -5,7 +5,7 @@ AeESome is a simple AES library for the Go language
 
 Before doing any work, source init.sh:
 
-``sh
+``
 source init.sh
 ``
 
@@ -13,6 +13,6 @@ This will setup a local $GOPATH for you, and also set your $PATH to include the 
 
 Install gocheck:
 
-``sh
+``
 go get gopkg.in/check.v1
 ``
