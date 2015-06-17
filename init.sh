@@ -2,12 +2,7 @@
 
 # This file SHOULD NOT be executed, it should be sourced.
 
-if command -v realpath>/dev/null 2>&1; then
-    CURRENT_FILE=`realpath "$0"`
-else
-    CURRENT_FILE="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )/$(basename $0)"
-fi
-CURRENT_DIR=`dirname "$CURRENT_FILE"`
+CURRENT_DIR="$(cd $(dirname $0) && pwd)"
 
 export GOPATH=$CURRENT_DIR/gopkg
 export PATH=$GOPATH/bin:$PATH
