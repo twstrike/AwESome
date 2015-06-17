@@ -1,5 +1,6 @@
 package aes
 
 func subBytes(s state) state {
-     return s
+	// TODO: implement
+	return s
 }

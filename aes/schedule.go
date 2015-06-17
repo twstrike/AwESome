@@ -8,5 +8,6 @@ type roundSchedule [4]word
 type keySchedule128 [Nr128 + 1]roundSchedule
 
 func scheduleFor(key Key128) keySchedule128 {
+	// TODO: implement
 	return keySchedule128{}
 }

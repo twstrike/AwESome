@@ -13,14 +13,18 @@ type CipherText [4]word
 type state [4][4]byte
 
 func parseKey(key HexString) Key128 {
-	return Key128{0, 0, 0, 0}
+	var result Key128
+	hexStringToWord(key, &result)
+	return result
 }
 
 func parsePlainText(plain HexString) PlainText {
+	// TODO: implement
 	return PlainText{0, 0, 0, 0}
 }
 
 func toHexString(cipher CipherText) HexString {
+	// TODO: implement
 	return HexString("placeholder")
 }
 
@@ -29,10 +33,12 @@ func EncryptHex(key, plain HexString) HexString {
 }
 
 func stateFrom(plain PlainText) state {
+	// TODO: implement
      return state{}
 }
 
 func stateToCipherText(s state) CipherText {
+	// TODO: implement
      return CipherText{}
 }
 
@@ -45,7 +51,7 @@ func Encrypt128(key Key128, plain PlainText) CipherText {
 	    state = addRoundKey(
 	    	  mixColumns(
 			shiftRows(
-				subBytes(state))), 
+				subBytes(state))),
 		schedule[i])
 	}
 
