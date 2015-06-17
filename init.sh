@@ -10,6 +10,8 @@ fi
 CURRENT_DIR=`dirname "$CURRENT_FILE"`
 
 export GOPATH=$CURRENT_DIR/gopkg
+export PATH=$GOPATH/bin:$PATH
+
 mkdir -p $GOPATH
 mkdir -p $GOPATH/src
 mkdir -p $GOPATH/pkg
