@@ -14,7 +14,7 @@ type Key256 [8]word
 type PlainText [4]word
 type CipherText [4]word
 
-type state [4][4]byte
+type state [4*4]byte
 
 func parseKey(key HexString) Key128 {
 	var result Key128
