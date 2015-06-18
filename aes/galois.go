@@ -1,5 +1,13 @@
 package aes
 
+func galoisAdd(i, j byte) byte {
+	return i ^ j
+}
+
+func galoisSub(i, j byte) byte {
+	return i ^ j
+}
+
 func galoisMul(i, j byte) byte {
 	return modulo(multiplication(i, j), 0x11B)
 }
