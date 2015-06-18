@@ -14,3 +14,7 @@ type state [4 * 4]byte
 
 type roundSchedule [4]word
 type keySchedule128 [Nr128 + 1]roundSchedule
+
+type Key interface {
+	keyLength() int
+}
