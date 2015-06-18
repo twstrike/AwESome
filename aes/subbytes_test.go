@@ -1,0 +1,63 @@
+package aes
+
+import (
+	. "gopkg.in/check.v1"
+)
+
+type MyTestSuite struct{}
+
+var _ = Suite(&MyTestSuite{})
+
+func (s *MyTestSuite) TestMe(c *C) {
+	oldstate := state{
+		[4]byte{0x00, 0x00, 0x00, 0x00},
+		[4]byte{0x00, 0x00, 0x00, 0x00},
+		[4]byte{0x00, 0x00, 0x00, 0x00},
+		[4]byte{0x00, 0x00, 0x00, 0x00},
+	}
+	newState := state{
+		[4]byte{0x63, 0x63, 0x63, 0x63},
+		[4]byte{0x63, 0x63, 0x63, 0x63},
+		[4]byte{0x63, 0x63, 0x63, 0x63},
+		[4]byte{0x63, 0x63, 0x63, 0x63},
+	}
+	c.Assert(subBytes(oldstate), Equals, newState)
+}
+func (s *MyTestSuite) TestYou(c *C) {
+	oldstate := state{
+		[4]byte{0x53, 0x53, 0x53, 0x53},
+		[4]byte{0x53, 0x53, 0x53, 0x53},
+		[4]byte{0x53, 0x53, 0x53, 0x53},
+		[4]byte{0x53, 0x53, 0x53, 0x53},
+	}
+	newState := state{
+		[4]byte{0xed, 0xed, 0xed, 0xed},
+		[4]byte{0xed, 0xed, 0xed, 0xed},
+		[4]byte{0xed, 0xed, 0xed, 0xed},
+		[4]byte{0xed, 0xed, 0xed, 0xed},
+	}
+	c.Assert(subBytes(oldstate), Equals, newState)
+}
+
+func (s *MyTestSuite) TestMultiplication(c *C) {
+	var a, b byte
+	a = 0x57
+	b = 0x83
+
+	c.Assert(multiplication(a, b), Equals, uint16(0x2b79))
+}
+func (s *MyTestSuite) TestModulo(c *C) {
+	var a, b uint16
+	a = 0x2b79
+	b = 0x011b
+
+	c.Assert(modulo(a, b), Equals, byte(0xc1))
+}
+func (s *MyTestSuite) TestNbits(c *C) {
+	var a, b uint16
+	a = 0x2b79
+	b = 0x011b
+
+	c.Assert(nbits(a), Equals, uint(14))
+	c.Assert(nbits(b), Equals, uint(9))
+}
