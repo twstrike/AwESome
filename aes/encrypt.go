@@ -1,9 +1,5 @@
 package aes
 
-import(
-    "strings"
-)
-
 type HexString string
 
 type word uint32
@@ -18,8 +14,7 @@ type state [4*4]byte
 
 func parseKey(key HexString) Key128 {
 	var result Key128
-    noSpacesStr := strings.Replace(string(key), " ", "", -1)
-    hexStringToWord(HexString(noSpacesStr), &result)
+    hexStringToWord(key, &result)
 	return result
 }
 
