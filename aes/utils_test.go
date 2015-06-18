@@ -28,3 +28,15 @@ func (s *UtilsSuite) TesthexStringToWordWith2Words(c *C) {
 	hexStringToWord("313198a2e0370734", &result)
 	c.Check(result, DeepEquals, [2]word{0x313198a2, 0xe0370734})
 }
+
+func (s *UtilsSuite) TestWordToHexStringWith2Words(c *C) {
+	words := [2]word{0x313198a2, 0xe0370734}
+	result := wordToHexString(words)
+	c.Check(result, DeepEquals, HexString("313198a2e0370734"))
+}
+
+func (s *UtilsSuite) TestWordToHexStringWith4Words(c *C) {
+	words := [4]word{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}
+	result := wordToHexString(words)
+	c.Check(result, DeepEquals, HexString("3243f6a8885a308d313198a2e0370734"))
+}

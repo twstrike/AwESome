@@ -13,8 +13,7 @@ func parsePlainText(plain HexString) PlainText {
 }
 
 func toHexString(cipher CipherText) HexString {
-	// TODO: implement
-	return HexString("placeholder")
+	return wordToHexString(cipher)
 }
 
 func EncryptHex(key, plain HexString) HexString {

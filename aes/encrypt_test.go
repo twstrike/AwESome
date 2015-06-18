@@ -37,3 +37,8 @@ func (s *EncryptSuite) TestParsePlainTextWithAOne(c *C) {
 	res := parsePlainText("00000000000000000000000000000001")
 	c.Check(res, DeepEquals, PlainText{0, 0, 0, 1})
 }
+
+func (s *EncryptSuite) TestToHexStringWithAllZeroes(c *C) {
+	res := toHexString(CipherText{0, 0, 0, 0})
+	c.Check(res, DeepEquals, HexString("00000000000000000000000000000000"))
+}
