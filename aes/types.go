@@ -15,6 +15,15 @@ type state [4 * 4]byte
 type roundSchedule [4]word
 type keySchedule128 [Nr128 + 1]roundSchedule
 
+type AesConfiguration struct {
+	keyLength int
+	rounds int
+}
+
+type keySchedule interface {
+	round(i int) roundSchedule
+}
+
 type Key interface {
-	keyLength() int
+	aesConfiguration() AesConfiguration
 }

@@ -1,6 +1,10 @@
 package aes
 
-func scheduleFor(key Key128) keySchedule128 {
+func (s keySchedule128) round(i int) roundSchedule {
+	return s[i]
+}
+
+func scheduleFor(key Key) keySchedule {
 	// TODO: implement
 	return keySchedule128{}
 }
