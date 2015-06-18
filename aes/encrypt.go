@@ -19,8 +19,9 @@ func parseKey(key HexString) Key128 {
 }
 
 func parsePlainText(plain HexString) PlainText {
-	// TODO: implement
-	return PlainText{0, 0, 0, 0}
+	var result PlainText
+	hexStringToWord(plain, &result)
+	return result
 }
 
 func toHexString(cipher CipherText) HexString {

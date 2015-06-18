@@ -27,3 +27,13 @@ func (s *EncryptSuite) TestParseKeyWithSpaces(c *C) {
 	res := parseKey(nospc("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01"))
 	c.Check(res, DeepEquals, Key128{0, 0, 0, 1})
 }
+
+func (s *EncryptSuite) TestParsePlainTextWithAllZeroes(c *C) {
+	res := parsePlainText("00000000000000000000000000000000")
+	c.Check(res, DeepEquals, PlainText{0, 0, 0, 0})
+}
+
+func (s *EncryptSuite) TestParsePlainTextWithAOne(c *C) {
+	res := parsePlainText("00000000000000000000000000000001")
+	c.Check(res, DeepEquals, PlainText{0, 0, 0, 1})
+}
