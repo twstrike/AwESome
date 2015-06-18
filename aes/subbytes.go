@@ -1,18 +1,10 @@
 package aes
 
 func subBytes(s state) state {
-	var newState state
-	for i, stateline := range s {
-		for j, b := range stateline {
-			newState[i][j] = affineTrans(b)
-		}
-	}
-	return newState
+	return s
 }
 
 func affineTrans(b byte) byte {
-	const affin = 0x8F
-
 	return 0x11
 }
 
@@ -28,7 +20,7 @@ func multiplication(i, j byte) uint16 {
 	a := uint16(i)
 	b := uint16(j)
 
-	for position := 0; position < 8; i++ {
+	for position := uint16(0); position < 8; position++ {
 		out = helper(position, a, out, b)
 	}
 
