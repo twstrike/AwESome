@@ -22,15 +22,15 @@ type SimpleSuite struct{}
 var _ = Suite(&SimpleSuite{})
 
 func (s *SimpleSuite) SetUpSuite(c *C) {
-    c.Skip("Not yet implemented.")
+	c.Skip("Not yet implemented.")
 }
 
 func (s *StandardAESSuite) SetUpSuite(c *C) {
-    c.Skip("Not yet implemented.")
+	c.Skip("Not yet implemented.")
 }
 
 func (s *GladmanAESSuite) SetUpSuite(c *C) {
-    c.Skip("Not yet implemented.")
+	c.Skip("Not yet implemented.")
 }
 
 var testGladman128Encrypting = []string{

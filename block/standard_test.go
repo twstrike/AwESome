@@ -1,31 +1,38 @@
 package block
 
 import (
-	"testing"
 	. "gopkg.in/check.v1"
+	"testing"
 )
 
 func Test(t *testing.T) { TestingT(t) }
 
 type ECBSuite struct{}
+
 var _ = Suite(&ECBSuite{})
 
 type CBCSuite struct{}
+
 var _ = Suite(&CBCSuite{})
 
 type CFB1Suite struct{}
+
 var _ = Suite(&CFB1Suite{})
 
 type CFB8Suite struct{}
+
 var _ = Suite(&CFB8Suite{})
 
 type CFB128Suite struct{}
+
 var _ = Suite(&CFB128Suite{})
 
 type OFBSuite struct{}
+
 var _ = Suite(&OFBSuite{})
 
 type CTRSuite struct{}
+
 var _ = Suite(&CTRSuite{})
 
 // Data from: http://csrc.nist.gov/publications/nistpubs/800-38a/sp800-38a.pdf
@@ -35,8 +42,8 @@ type Block struct {
 }
 
 type TestVector struct {
-	key string
-	iv  string
+	key    string
+	iv     string
 	blocks []Block
 }
 

@@ -1,8 +1,8 @@
 package aes
 
-import(
+import (
 	"bytes"
-    "encoding/binary"
+	"encoding/binary"
 	"encoding/hex"
 )
 

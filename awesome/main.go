@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-//	"github.com/twstrike/AwESome/aes"
-//	"github.com/twstrike/AwESome/block"
+	//	"github.com/twstrike/AwESome/aes"
+	//	"github.com/twstrike/AwESome/block"
 )
 
 func main() {

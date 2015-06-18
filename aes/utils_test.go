@@ -1,13 +1,14 @@
 package aes
 
 import (
-	"testing"
 	. "gopkg.in/check.v1"
+	"testing"
 )
 
 func Test(t *testing.T) { TestingT(t) }
 
 type UtilsSuite struct{}
+
 var _ = Suite(&UtilsSuite{})
 
 func (s *UtilsSuite) TesthexStringToWordEmptyHexString(c *C) {
