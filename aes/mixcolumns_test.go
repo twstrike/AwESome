@@ -12,14 +12,14 @@ func (s *MixColumnsSuite) Test_mixOneColumnTestVector1(c *C) {
 	before := state{
 		0xDB, 0, 0, 0,
 		0x13, 0, 0, 0,
-		0x53, 0,0,0,
-		0x45, 0,0,0,
+		0x53, 0, 0, 0,
+		0x45, 0, 0, 0,
 	}
 	expected := state{
 		0x8E, 0, 0, 0,
 		0x4D, 0, 0, 0,
-		0xA1, 0,0,0,
-		0xBC, 0,0,0,
+		0xA1, 0, 0, 0,
+		0xBC, 0, 0, 0,
 	}
 
 	c.Check(mixOneColumn(before, 0), DeepEquals, expected)
@@ -29,14 +29,14 @@ func (s *MixColumnsSuite) Test_mixOneColumnTestVector2(c *C) {
 	before := state{
 		0xF2, 0, 0, 0,
 		0x0A, 0, 0, 0,
-		0x22, 0,0,0,
-		0x5C, 0,0,0,
+		0x22, 0, 0, 0,
+		0x5C, 0, 0, 0,
 	}
 	expected := state{
 		0x9F, 0, 0, 0,
 		0xDC, 0, 0, 0,
-		0x58, 0,0,0,
-		0x9D, 0,0,0,
+		0x58, 0, 0, 0,
+		0x9D, 0, 0, 0,
 	}
 
 	c.Check(mixOneColumn(before, 0), DeepEquals, expected)
@@ -46,14 +46,14 @@ func (s *MixColumnsSuite) Test_mixOneColumnTestVector3(c *C) {
 	before := state{
 		0x01, 0, 0, 0,
 		0x01, 0, 0, 0,
-		0x01, 0,0,0,
-		0x01, 0,0,0,
+		0x01, 0, 0, 0,
+		0x01, 0, 0, 0,
 	}
 	expected := state{
 		0x01, 0, 0, 0,
 		0x01, 0, 0, 0,
-		0x01, 0,0,0,
-		0x01, 0,0,0,
+		0x01, 0, 0, 0,
+		0x01, 0, 0, 0,
 	}
 
 	c.Check(mixOneColumn(before, 0), DeepEquals, expected)
@@ -63,14 +63,14 @@ func (s *MixColumnsSuite) Test_mixOneColumnTestVector4(c *C) {
 	before := state{
 		0, 0xC6, 0, 0,
 		0, 0xC6, 0, 0,
-		0, 0xC6, 0,0,
-		0, 0xC6, 0,0,
+		0, 0xC6, 0, 0,
+		0, 0xC6, 0, 0,
 	}
 	expected := state{
 		0, 0xC6, 0, 0,
 		0, 0xC6, 0, 0,
-		0, 0xC6, 0,0,
-		0, 0xC6, 0,0,
+		0, 0xC6, 0, 0,
+		0, 0xC6, 0, 0,
 	}
 
 	c.Check(mixOneColumn(before, 1), DeepEquals, expected)

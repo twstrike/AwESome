@@ -15,8 +15,9 @@ func EncryptHex(key, plain HexString) HexString {
 }
 
 func stateFrom(plain PlainText) state {
-	// TODO: implement
-	return state{}
+	result := state{}
+	copy(result[:], wordsToBytes(plain))
+	return result
 }
 
 func stateToCipherText(s state) CipherText {

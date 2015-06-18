@@ -17,7 +17,7 @@ type keySchedule128 [Nr128 + 1]roundSchedule
 
 type AesConfiguration struct {
 	keyLength int
-	rounds int
+	rounds    int
 }
 
 type keySchedule interface {
