@@ -26,4 +26,5 @@ type keySchedule interface {
 
 type Key interface {
 	aesConfiguration() AesConfiguration
+	newKeySchedule() keySchedule
 }
