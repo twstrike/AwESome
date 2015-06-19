@@ -4,11 +4,15 @@ import (
 	"github.com/twstrike/AwESome/rijndael"
 )
 
+func applySBox(b byte) byte {
+	return affineTrans(rijndael.Inv(b))
+}
+
 func subBytes(s state) state {
 	out := state{}
 
 	for i, b := range s {
-		out[i] = affineTrans(rijndael.Inv(b))
+		out[i] = applySBox(b)
 	}
 
 	return out

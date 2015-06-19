@@ -32,10 +32,10 @@ func (s keySchedule128) round(i int) roundSchedule {
 
 func subWord(w word) word {
 	out := word(0)
-	out |= word(affineTrans(rijndael.Inv(byte(w>>24)))) << 24
-	out |= word(affineTrans(rijndael.Inv(byte(w>>16)))) << 16
-	out |= word(affineTrans(rijndael.Inv(byte(w>>8)))) << 8
-	out |= word(affineTrans(rijndael.Inv(byte(w>>0)))) << 0
+	out |= word(applySBox(byte(w>>24))) << 24
+	out |= word(applySBox(byte(w>>16))) << 16
+	out |= word(applySBox(byte(w>>8))) << 8
+	out |= word(applySBox(byte(w>>0))) << 0
 	return out
 }
 
