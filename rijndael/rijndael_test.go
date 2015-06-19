@@ -6,6 +6,7 @@ import (
 )
 
 func Test(t *testing.T) { TestingT(t) }
+
 type RijndaelTestSuite struct{}
 
 var _ = Suite(&RijndaelTestSuite{})
