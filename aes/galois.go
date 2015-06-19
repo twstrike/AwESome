@@ -55,3 +55,11 @@ func nbits(a uint16) uint {
 
 	return n
 }
+
+func inverse(a byte) byte {
+	if a == 0 {
+		return 0
+	}
+
+	return galoisExp(a, 254)
+}

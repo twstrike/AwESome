@@ -32,3 +32,11 @@ func (s *GaloisTestSuite) TestNbits(c *C) {
 	c.Assert(nbits(a), Equals, uint(14))
 	c.Assert(nbits(b), Equals, uint(9))
 }
+
+func (s *GaloisTestSuite) TestMultiplicativeInverse(c *C) {
+	subject := byte(0x53)
+	expected := byte(0xCA)
+
+	c.Assert(inverse(subject), Equals, expected)
+	c.Assert(inverse(0), Equals, byte(0))
+}
