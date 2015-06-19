@@ -31,6 +31,10 @@ func (s *StandardScheduleSuite) TestRotWord(c *C) {
 	c.Check(rotWord(0xABCDEF12), Equals, word(0xCDEF12AB))
 }
 
+func (s *StandardScheduleSuite) TestSubWord(c *C) {
+	c.Check(subWord(0xABCDEF12), Equals, word(0x62BDDFC9))
+}
+
 func (s *StandardScheduleSuite) Test_rcon(c *C) {
 	c.Check(rcon(1), Equals, byte(0x01))
 	c.Check(rcon(2), Equals, byte(0x02))

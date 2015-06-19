@@ -31,7 +31,12 @@ func (s keySchedule128) round(i int) roundSchedule {
 }
 
 func subWord(w word) word {
-	return w
+	out := word(0)
+	out |= word(affineTrans(rijndael.Inv(byte(w>>24)))) << 24
+	out |= word(affineTrans(rijndael.Inv(byte(w>>16)))) << 16
+	out |= word(affineTrans(rijndael.Inv(byte(w>>8)))) << 8
+	out |= word(affineTrans(rijndael.Inv(byte(w>>0)))) << 0
+	return out
 }
 
 func rotWord(w word) word {
