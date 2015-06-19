@@ -15,7 +15,7 @@ func galoisMul(i, j byte) byte {
 func galoisExp(x, n byte) byte {
 	result := byte(1)
 
-	for i:=byte(0); i<n; i++ {
+	for i := byte(0); i < n; i++ {
 		result = galoisMul(result, x)
 	}
 
@@ -28,10 +28,10 @@ func multiplication(i, j byte) uint16 {
 	b := uint16(j)
 
 	for place := uint16(0); place < 8; place++ {
-    var k uint16 = 1 << place
-    // if bit K in b is set, mask will be 0xFF, otherwise 0x00 - this avoids branching
-    mask := uint16((int16(k&b) << (15 - place)) >> 15)
-    out = out ^ ((a << place) & mask)
+		var k uint16 = 1 << place
+		// if bit K in b is set, mask will be 0xFF, otherwise 0x00 - this avoids branching
+		mask := uint16((int16(k&b) << (15 - place)) >> 15)
+		out = out ^ ((a << place) & mask)
 	}
 
 	return out

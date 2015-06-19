@@ -7,7 +7,7 @@ func (key Key128) newKeySchedule() keySchedule {
 	result[0][2] = key[2]
 	result[0][3] = key[3]
 
-	for i:=1; i<= Nr128; i++ {
+	for i := 1; i <= Nr128; i++ {
 		prev := result[i-1]
 		w0 := prev[0] ^ (subWord(rotWord(prev[3])) ^ word(rcon(i)))
 		w1 := prev[1] ^ w0
@@ -31,7 +31,7 @@ func subWord(w word) word {
 }
 
 func rotWord(w word) word {
-	return w << 8 | (w >> 24)
+	return w<<8 | (w >> 24)
 }
 
 func rcon(i int) byte {

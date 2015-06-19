@@ -7,4 +7,3 @@ func subBytes(s state) state {
 func affineTrans(b byte) byte {
 	return 0x11
 }
-

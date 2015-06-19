@@ -44,8 +44,8 @@ func (s *EncryptSuite) TestToHexStringWithAllZeroes(c *C) {
 }
 
 func (s *EncryptSuite) Test_stateFromAllZeroes(c *C) {
-	res := stateFrom(PlainText{0,0,0,0})
-	c.Check(res, DeepEquals, state{0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0})
+	res := stateFrom(PlainText{0, 0, 0, 0})
+	c.Check(res, DeepEquals, state{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 }
 
 func (s *EncryptSuite) Test_stateFromNonZeroes(c *C) {
