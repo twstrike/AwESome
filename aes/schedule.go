@@ -1,7 +1,7 @@
 package aes
 
 import (
-  "github.com/twstrike/AwESome/rijndael"
+	"github.com/twstrike/AwESome/rijndael"
 )
 
 func (key Key128) newKeySchedule() keySchedule {
