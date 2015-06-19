@@ -8,6 +8,11 @@ type SubBytesTestSuite struct{}
 
 var _ = Suite(&SubBytesTestSuite{})
 
+func (s *SubBytesTestSuite) TestAffineTransformation(c *C) {
+	c.Assert(affineTrans(byte(0x00)), Equals, byte(0x63))
+	c.Assert(affineTrans(byte(0xca)), Equals, byte(0xed))
+}
+
 func (s *SubBytesTestSuite) TestMe(c *C) {
 	oldstate := state{
 		0x00, 0x00, 0x00, 0x00,

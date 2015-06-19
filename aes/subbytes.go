@@ -1,9 +1,24 @@
 package aes
 
+import (
+	"github.com/twstrike/AwESome/rijndael"
+)
+
 func subBytes(s state) state {
-	return s
+	out := state{}
+
+	for i, b := range s {
+		out[i] = affineTrans(rijndael.Inv(b))
+	}
+
+	return out
 }
 
 func affineTrans(b byte) byte {
-	return 0x11
+	return b ^ rotRight(b, 4) ^ rotRight(b, 5) ^ rotRight(b, 6) ^ rotRight(b, 7) ^ 0x63
+}
+
+func rotRight(b, n byte) byte {
+	n = n % 8
+	return (b >> n) | (b << (8 - n))
 }
