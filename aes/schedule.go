@@ -1,5 +1,9 @@
 package aes
 
+import (
+  "github.com/twstrike/AwESome/rijndael"
+)
+
 func (key Key128) newKeySchedule() keySchedule {
 	result := keySchedule128{}
 	result[0][0] = key[0]
@@ -35,7 +39,7 @@ func rotWord(w word) word {
 }
 
 func rcon(i int) byte {
-	return galoisExp(2, byte(i-1))
+	return rijndael.Exp(2, byte(i-1))
 }
 func scheduleFor(key Key) keySchedule {
 	return key.newKeySchedule()
