@@ -33,6 +33,11 @@ func (s *EncryptSuite) TestParsePlainTextWithAllZeroes(c *C) {
 	c.Check(res, DeepEquals, PlainText{0, 0, 0, 0})
 }
 
+func (s *EncryptSuite) TestParsePlainTextWithSpaces(c *C) {
+	res := parsePlainText("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
+	c.Check(res, DeepEquals, PlainText{0, 0, 0, 0})
+}
+
 func (s *EncryptSuite) TestParsePlainTextWithAOne(c *C) {
 	res := parsePlainText("00000000000000000000000000000001")
 	c.Check(res, DeepEquals, PlainText{0, 0, 0, 1})
@@ -66,4 +71,12 @@ func (s *EncryptSuite) Test_stateToCipherText(c *C) {
 		0xe0, 0x37, 0x07, 0x34,
 	})
 	c.Check(res, DeepEquals, CipherText{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734})
+}
+
+func (s *EncryptSuite) TestEncrypt(c *C) {
+	plain := PlainText{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}
+	key := Key128{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c}
+	expected := CipherText{0x3925841d, 0x02dc09fb, 0xdc118597, 0x196a0b32}
+
+	c.Check(expected, DeepEquals, Encrypt(key, plain))
 }
