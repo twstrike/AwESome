@@ -8,7 +8,7 @@ type StandardScheduleSuite struct{}
 
 var _ = Suite(&StandardScheduleSuite{})
 
-func (s *StandardScheduleSuite) Test_scheduleFor128(c *C) {
+func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 	key := Key128{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c}
 	expected := keySchedule128{
 		roundSchedule{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c},
@@ -35,12 +35,12 @@ func (s *StandardScheduleSuite) TestSubWord(c *C) {
 	c.Check(subWord(0xABCDEF12), Equals, word(0x62BDDFC9))
 }
 
-func (s *StandardScheduleSuite) Test_rcon(c *C) {
-	c.Check(rcon(1), Equals, byte(0x01))
-	c.Check(rcon(2), Equals, byte(0x02))
-	c.Check(rcon(3), Equals, byte(0x04))
-	c.Check(rcon(4), Equals, byte(0x08))
-	c.Check(rcon(9), Equals, byte(0x1B))
-	c.Check(rcon(254), Equals, byte(0xCB))
-	c.Check(rcon(255), Equals, byte(0x8D))
+func (s *StandardScheduleSuite) TestRcon(c *C) {
+	c.Check(rcon(1), Equals, word(0x01000000))
+	c.Check(rcon(2), Equals, word(0x02000000))
+	c.Check(rcon(3), Equals, word(0x04000000))
+	c.Check(rcon(4), Equals, word(0x08000000))
+	c.Check(rcon(9), Equals, word(0x1B000000))
+	c.Check(rcon(254), Equals, word(0xCB000000))
+	c.Check(rcon(255), Equals, word(0x8D000000))
 }
