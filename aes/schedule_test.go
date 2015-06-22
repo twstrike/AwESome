@@ -27,15 +27,15 @@ func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 	c.Check(scheduleFor(key), DeepEquals, expected)
 }
 
-func (s *StandardScheduleSuite) TestRotWord(c *C) {
+func (s *StandardScheduleSuite) Test_rotWord(c *C) {
 	c.Check(rotWord(0xABCDEF12), Equals, word(0xCDEF12AB))
 }
 
-func (s *StandardScheduleSuite) TestSubWord(c *C) {
+func (s *StandardScheduleSuite) Test_subWord(c *C) {
 	c.Check(subWord(0xABCDEF12), Equals, word(0x62BDDFC9))
 }
 
-func (s *StandardScheduleSuite) TestRcon(c *C) {
+func (s *StandardScheduleSuite) Test_rcon(c *C) {
 	c.Check(rcon(1), Equals, word(0x01000000))
 	c.Check(rcon(2), Equals, word(0x02000000))
 	c.Check(rcon(3), Equals, word(0x04000000))
