@@ -21,8 +21,9 @@ func stateFrom(plain PlainText) state {
 }
 
 func stateToCipherText(s state) CipherText {
-	// TODO: implement
-	return CipherText{}
+	result := CipherText{}
+	bytesToWord(s[:], &result)
+	return result
 }
 
 func Encrypt(key Key, plain PlainText) CipherText {
