@@ -71,7 +71,7 @@ func (s *EncryptSuite) Test_stateToCipherText(c *C) {
 		0x31, 0x31, 0x98, 0xa2,
 		0xe0, 0x37, 0x07, 0x34,
 	})
-	c.Check(res, DeepEquals, CipherText{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734})
+	c.Check(res, DeepEquals, CipherText{0x328831e0, 0x435a3137, 0xf6309807, 0xa88da234})
 }
 
 func (s *EncryptSuite) TestEncrypt(c *C) {

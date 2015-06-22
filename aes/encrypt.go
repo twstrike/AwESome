@@ -30,9 +30,10 @@ func transposeState(s state) state {
 }
 
 func stateToCipherText(s state) CipherText {
-	result := CipherText{}
-	bytesToWord(s[:], &result)
-	return result
+	r := CipherText{}
+	inv := transposeState(s)
+	bytesToWord(inv[:], &r)
+	return r
 }
 
 func Encrypt(key Key, plain PlainText) CipherText {
