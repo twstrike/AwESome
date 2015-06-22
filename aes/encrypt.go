@@ -17,7 +17,16 @@ func EncryptHex(key, plain HexString) HexString {
 func stateFrom(plain PlainText) state {
 	result := state{}
 	copy(result[:], wordsToBytes(plain))
-	return result
+	return transposeState(result)
+}
+
+func transposeState(s state) state {
+	return state{
+		s[0], s[4], s[8], s[12],
+		s[1], s[5], s[9], s[13],
+		s[2], s[6], s[10], s[14],
+		s[3], s[7], s[11], s[15],
+	}
 }
 
 func stateToCipherText(s state) CipherText {
