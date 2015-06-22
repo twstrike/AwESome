@@ -19,15 +19,15 @@ type SimpleSuite struct{}
 var _ = Suite(&SimpleSuite{})
 
 func (s *SimpleSuite) SetUpSuite(c *C) {
-	c.Skip("Not yet implemented.")
+	//c.Skip("Not yet implemented.")
 }
 
 func (s *StandardAESSuite) SetUpSuite(c *C) {
-	c.Skip("Not yet implemented.")
+	//c.Skip("Not yet implemented.")
 }
 
 func (s *GladmanAESSuite) SetUpSuite(c *C) {
-	c.Skip("Not yet implemented.")
+	//c.Skip("Not yet implemented.")
 }
 
 var testGladman128Encrypting = []string{
@@ -383,6 +383,7 @@ func testEncryptingOn(data []string, c *C) {
 }
 
 func testDecryptingOn(data []string, c *C) {
+	c.Skip("Not yet implemented.")
 	decryptionData := parseDecryptionData(data)
 	result := decrypt(decryptionData.ciphertext, decryptionData.key)
 	c.Assert(result, Equals, decryptionData.expected)
@@ -397,6 +398,7 @@ func (s *GladmanAESSuite) TestGladman128Decrypting(c *C) {
 }
 
 func (s *GladmanAESSuite) TestGladman192Encrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testEncryptingOn(testGladman192Encrypting, c)
 }
 
@@ -405,6 +407,7 @@ func (s *GladmanAESSuite) TestGladman192Decrypting(c *C) {
 }
 
 func (s *GladmanAESSuite) TestGladman256Encrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testEncryptingOn(testGladman256Encrypting, c)
 }
 
@@ -421,6 +424,7 @@ func (s *StandardAESSuite) TestStandard128Decrypting(c *C) {
 }
 
 func (s *StandardAESSuite) TestStandard192Encrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testEncryptingOn(testAES192Encrypting, c)
 }
 
@@ -429,6 +433,7 @@ func (s *StandardAESSuite) TestStandard192Decrypting(c *C) {
 }
 
 func (s *StandardAESSuite) TestStandard256Encrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testEncryptingOn(testAES256Encrypting, c)
 }
 
