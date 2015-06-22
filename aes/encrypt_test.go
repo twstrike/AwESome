@@ -33,11 +33,6 @@ func (s *EncryptSuite) TestParsePlainTextWithAllZeroes(c *C) {
 	c.Check(res, DeepEquals, PlainText{0, 0, 0, 0})
 }
 
-func (s *EncryptSuite) TestParsePlainTextWithSpaces(c *C) {
-	res := parsePlainText("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00")
-	c.Check(res, DeepEquals, PlainText{0, 0, 0, 0})
-}
-
 func (s *EncryptSuite) TestParsePlainTextWithAOne(c *C) {
 	res := parsePlainText("00000000000000000000000000000001")
 	c.Check(res, DeepEquals, PlainText{0, 0, 0, 1})
