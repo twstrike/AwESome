@@ -26,3 +26,23 @@ func wordToHexString(in interface{}) HexString {
 	encoded := hex.EncodeToString(wordsToBytes(in))
 	return HexString(encoded)
 }
+
+func parsePlainText(plain HexString) PlainText {
+	var result PlainText
+	hexStringToWord(plain, &result)
+	return result
+}
+
+func toHexString(cipher CipherText) HexString {
+	return wordToHexString(cipher)
+}
+
+func EncryptHex(key, plain HexString) HexString {
+	return toHexString(Encrypt(parseKey(key), parsePlainText(plain)))
+}
+
+func stateFrom(block Block) state {
+	result := state{}
+	copy(result[:], wordsToBytes(block))
+	return result.transpose()
+}
