@@ -9,3 +9,13 @@ func subBytes(s state) state {
 
 	return out
 }
+
+func invSubBytes(s state) state {
+	out := state{}
+
+	for i, b := range s {
+		out[i] = applyInvSBox(b)
+	}
+
+	return out
+}
