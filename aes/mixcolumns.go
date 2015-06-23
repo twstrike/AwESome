@@ -1,5 +1,9 @@
 package aes
 
+import (
+	"github.com/twstrike/AwESome/rijndael"
+)
+
 func mul1(b byte) byte {
 	return b
 }
@@ -27,10 +31,32 @@ func mixOneColumn(s state, col int) state {
 	return result
 }
 
+func invMixOneColumn(s state, col int) state {
+	a0 := s[0+col]
+	a1 := s[4+col]
+	a2 := s[8+col]
+	a3 := s[12+col]
+
+	result := s
+	result[0+col] = rijndael.Mul(0x0e, a0) ^ rijndael.Mul(0x0b, a1) ^ rijndael.Mul(0x0d, a2) ^ rijndael.Mul(0x09, a3)
+	result[4+col] = rijndael.Mul(0x09, a0) ^ rijndael.Mul(0x0e, a1) ^ rijndael.Mul(0x0b, a2) ^ rijndael.Mul(0x0d, a3)
+	result[8+col] = rijndael.Mul(0x0d, a0) ^ rijndael.Mul(0x09, a1) ^ rijndael.Mul(0x0e, a2) ^ rijndael.Mul(0x0b, a3)
+	result[12+col] = rijndael.Mul(0x0b, a0) ^ rijndael.Mul(0x0d, a1) ^ rijndael.Mul(0x09, a2) ^ rijndael.Mul(0x0e, a3)
+	return result
+}
+
 func mixColumns(s state) state {
 	result := s
 	for i := 0; i < 4; i++ {
 		result = mixOneColumn(result, i)
+	}
+	return result
+}
+
+func invMixColumns(s state) state {
+	result := s
+	for i := 0; i < 4; i++ {
+		result = invMixOneColumn(result, i)
 	}
 	return result
 }
