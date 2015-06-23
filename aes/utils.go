@@ -22,23 +22,8 @@ func hexStringToWord(in HexString, data interface{}) {
 	bytesToWord(decodes, data)
 }
 
-func wordToHexString(in interface{}) HexString {
-	encoded := hex.EncodeToString(wordsToBytes(in))
-	return HexString(encoded)
-}
-
 func (h HexString) toBlock() Block {
 	var result Block
 	hexStringToWord(h, &result)
 	return result
-}
-
-func toHexString(block Block) HexString {
-	return wordToHexString(block)
-}
-
-func stateFrom(block Block) state {
-	result := state{}
-	copy(result[:], wordsToBytes(block))
-	return result.transpose()
 }

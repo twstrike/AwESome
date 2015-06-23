@@ -1,12 +1,12 @@
 package aes
 
 func DecryptHex(key, cipher HexString) HexString {
-	return toHexString(Decrypt(parseKey(key), cipher.toBlock()))
+	return Decrypt(parseKey(key), cipher.toBlock()).toHexString()
 }
 
 func Decrypt(key Key, cipher Block) Block {
 	schedule := scheduleFor(key)
-	state := stateFrom(cipher)
+	state := cipher.toState()
 
 	numRounds := key.aesConfiguration().rounds
 	state = addRoundKey(state, schedule.round(numRounds))
