@@ -27,10 +27,14 @@ func wordToHexString(in interface{}) HexString {
 	return HexString(encoded)
 }
 
-func parsePlainText(plain HexString) PlainText {
-	var result PlainText
+func toBlock(plain HexString) Block {
+	var result Block
 	hexStringToWord(plain, &result)
 	return result
+}
+
+func parsePlainText(plain HexString) PlainText {
+	return PlainText(toBlock(plain))
 }
 
 func parseCipherText(cipher HexString) CipherText {

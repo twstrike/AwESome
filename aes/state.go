@@ -9,10 +9,6 @@ func (s state) transpose() state {
 	}
 }
 
-func (s state) toCipherText() CipherText {
-	return CipherText(s.toBlock())
-}
-
 func (s state) toPlainText() PlainText {
 	return PlainText(s.toBlock())
 }
