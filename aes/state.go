@@ -9,10 +9,6 @@ func (s state) transpose() state {
 	}
 }
 
-func (s state) toPlainText() PlainText {
-	return PlainText(s.toBlock())
-}
-
 func (s state) toBlock() Block {
 	r := Block{}
 	inv := s.transpose()

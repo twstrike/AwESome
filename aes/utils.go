@@ -27,19 +27,9 @@ func wordToHexString(in interface{}) HexString {
 	return HexString(encoded)
 }
 
-func toBlock(plain HexString) Block {
+func (h HexString) toBlock() Block {
 	var result Block
-	hexStringToWord(plain, &result)
-	return result
-}
-
-func parsePlainText(plain HexString) PlainText {
-	return PlainText(toBlock(plain))
-}
-
-func parseCipherText(cipher HexString) CipherText {
-	var result CipherText
-	hexStringToWord(cipher, &result)
+	hexStringToWord(h, &result)
 	return result
 }
 
