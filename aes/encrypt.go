@@ -14,9 +14,9 @@ func EncryptHex(key, plain HexString) HexString {
 	return toHexString(Encrypt(parseKey(key), parsePlainText(plain)))
 }
 
-func stateFrom(plain PlainText) state {
+func stateFrom(block Block) state {
 	result := state{}
-	copy(result[:], wordsToBytes(plain))
+	copy(result[:], wordsToBytes(block))
 	return transposeState(result)
 }
 
@@ -30,7 +30,15 @@ func transposeState(s state) state {
 }
 
 func stateToCipherText(s state) CipherText {
-	r := CipherText{}
+	return CipherText(stateToBlockText(s))
+}
+
+func stateToPlainText(s state) PlainText {
+	return PlainText(stateToBlockText(s))
+}
+
+func stateToBlockText(s state) Block {
+	r := Block{}
 	inv := transposeState(s)
 	bytesToWord(inv[:], &r)
 	return r
@@ -38,7 +46,7 @@ func stateToCipherText(s state) CipherText {
 
 func Encrypt(key Key, plain PlainText) CipherText {
 	schedule := scheduleFor(key)
-	state := stateFrom(plain)
+	state := stateFrom(Block(plain))
 
 	state = addRoundKey(state, schedule.round(0))
 	numRounds := key.aesConfiguration().rounds
@@ -53,4 +61,23 @@ func Encrypt(key Key, plain PlainText) CipherText {
 
 	state = addRoundKey(shiftRows(subBytes(state)), schedule.round(numRounds))
 	return stateToCipherText(state)
+}
+
+func Decrypt(key Key, cipher CipherText) PlainText {
+	schedule := scheduleFor(key)
+	state := stateFrom(Block(cipher))
+
+	numRounds := key.aesConfiguration().rounds
+	state = addRoundKey(state, schedule.round(numRounds))
+
+	for i := numRounds - 1; i > 0; i-- {
+		state = invMixColumns(
+			addRoundKey(
+				invSubBytes(
+					invShiftRows(state)),
+				schedule.round(i)))
+	}
+
+	state = addRoundKey(invSubBytes(invShiftRows(state)), schedule.round(0))
+	return stateToPlainText(state)
 }

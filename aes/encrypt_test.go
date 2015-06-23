@@ -49,13 +49,13 @@ func (s *EncryptSuite) TestToHexStringWithAllZeroes(c *C) {
 }
 
 func (s *EncryptSuite) Test_stateFromAllZeroes(c *C) {
-	res := stateFrom(PlainText{0, 0, 0, 0})
+	res := stateFrom(Block{0, 0, 0, 0})
 	c.Check(res, DeepEquals, state{0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0})
 }
 
 func (s *EncryptSuite) Test_stateFromNonZeroes(c *C) {
 	// See AES spec, Appendix B – Cipher Example
-	res := stateFrom(PlainText{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734})
+	res := stateFrom(Block{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734})
 	c.Check(res, DeepEquals, state{
 		0x32, 0x88, 0x31, 0xe0,
 		0x43, 0x5a, 0x31, 0x37,
@@ -74,11 +74,11 @@ func (s *EncryptSuite) Test_stateToCipherText(c *C) {
 	c.Check(res, DeepEquals, CipherText{0x328831e0, 0x435a3137, 0xf6309807, 0xa88da234})
 }
 
-func (s *EncryptSuite) TestEncrypt(c *C) {
+func (s *EncryptSuite) TestDecrypt(c *C) {
 	//See AES spec, Appendix B – Cipher Example
-	plain := PlainText{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}
+	cipher := CipherText{0x3925841d, 0x02dc09fb, 0xdc118597, 0x196a0b32}
 	key := Key128{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c}
-	expected := CipherText{0x3925841d, 0x02dc09fb, 0xdc118597, 0x196a0b32}
+	expected := PlainText{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}
 
-	c.Check(expected, DeepEquals, Encrypt(key, plain))
+	c.Check(expected, DeepEquals, Decrypt(key, cipher))
 }

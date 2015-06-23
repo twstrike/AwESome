@@ -7,8 +7,9 @@ type Key128 [4]word
 type Key192 [6]word
 type Key256 [8]word
 
-type PlainText [4]word
-type CipherText [4]word
+type PlainText Block
+type CipherText Block
+type Block [4]word
 
 type state [4 * 4]byte
 
