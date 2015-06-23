@@ -1,5 +1,9 @@
 package aes
 
+func EncryptHex(key, plain HexString) HexString {
+	return toHexString(Block(Encrypt(parseKey(key), parsePlainText(plain))))
+}
+
 func Encrypt(key Key, plain PlainText) CipherText {
 	schedule := scheduleFor(key)
 	state := stateFrom(Block(plain))

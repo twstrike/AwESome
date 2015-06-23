@@ -359,7 +359,7 @@ func encrypt(plain, key string) string {
 }
 
 func decrypt(cipher, key string) string {
-	return ""
+	return string(aes.DecryptHex(aes.HexString(key), aes.HexString(cipher)))
 }
 
 func parseEncryptionData(data []string) EncryptionTest {
@@ -383,7 +383,6 @@ func testEncryptingOn(data []string, c *C) {
 }
 
 func testDecryptingOn(data []string, c *C) {
-	c.Skip("Not yet implemented.")
 	decryptionData := parseDecryptionData(data)
 	result := decrypt(decryptionData.ciphertext, decryptionData.key)
 	c.Assert(result, Equals, decryptionData.expected)
@@ -403,6 +402,7 @@ func (s *GladmanAESSuite) TestGladman192Encrypting(c *C) {
 }
 
 func (s *GladmanAESSuite) TestGladman192Decrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testDecryptingOn(testGladman192Decrypting, c)
 }
 
@@ -412,6 +412,7 @@ func (s *GladmanAESSuite) TestGladman256Encrypting(c *C) {
 }
 
 func (s *GladmanAESSuite) TestGladman256Decrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testDecryptingOn(testGladman256Decrypting, c)
 }
 
@@ -429,6 +430,7 @@ func (s *StandardAESSuite) TestStandard192Encrypting(c *C) {
 }
 
 func (s *StandardAESSuite) TestStandard192Decrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testDecryptingOn(testAES192Decrypting, c)
 }
 
@@ -438,6 +440,7 @@ func (s *StandardAESSuite) TestStandard256Encrypting(c *C) {
 }
 
 func (s *StandardAESSuite) TestStandard256Decrypting(c *C) {
+	c.Skip("Not yet implemented.")
 	testDecryptingOn(testAES256Decrypting, c)
 }
 

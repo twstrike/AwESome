@@ -74,7 +74,7 @@ func (s *UtilsSuite) TestParsePlainTextWithValues(c *C) {
 }
 
 func (s *UtilsSuite) TestToHexStringWithAllZeroes(c *C) {
-	res := toHexString(CipherText{0, 0, 0, 0})
+	res := toHexString(Block{0, 0, 0, 0})
 	c.Check(res, DeepEquals, HexString("00000000000000000000000000000000"))
 }
 

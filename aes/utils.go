@@ -33,12 +33,14 @@ func parsePlainText(plain HexString) PlainText {
 	return result
 }
 
-func toHexString(cipher CipherText) HexString {
-	return wordToHexString(cipher)
+func parseCipherText(cipher HexString) CipherText {
+	var result CipherText
+	hexStringToWord(cipher, &result)
+	return result
 }
 
-func EncryptHex(key, plain HexString) HexString {
-	return toHexString(Encrypt(parseKey(key), parsePlainText(plain)))
+func toHexString(block Block) HexString {
+	return wordToHexString(block)
 }
 
 func stateFrom(block Block) state {
