@@ -25,7 +25,7 @@ func keyExpand(key []word, Nr int) []word {
 	return result
 }
 
-func collectRoundSchedule(s []word, key Key) keySchedule {
+func collectRoundSchedule(s []word, key Key) KeySchedule {
 	result := make(KeySchedule, key.aesConfiguration().rounds+1)
 	for i := 0; i < key.aesConfiguration().rounds+1; i++ {
 		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
@@ -42,10 +42,6 @@ func subWord(w word) word {
 	return out
 }
 
-func (s KeySchedule) round(i int) roundSchedule {
-	return s[i]
-}
-
 func rotWord(w word) word {
 	return w<<8 | (w >> 24)
 }
@@ -54,6 +50,6 @@ func rcon(i int) word {
 	return word(rijndael.Exp(2, byte(i-1))) << 24
 }
 
-func scheduleFor(key Key) keySchedule {
+func scheduleFor(key Key) KeySchedule {
 	return key.newKeySchedule()
 }

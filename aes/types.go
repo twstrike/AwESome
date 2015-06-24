@@ -19,11 +19,7 @@ type AesConfiguration struct {
 	rounds    int
 }
 
-type keySchedule interface {
-	round(i int) roundSchedule
-}
-
 type Key interface {
 	aesConfiguration() AesConfiguration
-	newKeySchedule() keySchedule
+	newKeySchedule() KeySchedule
 }

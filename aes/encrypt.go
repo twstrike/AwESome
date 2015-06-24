@@ -8,7 +8,7 @@ func Encrypt(key Key, plain Block) Block {
 	schedule := scheduleFor(key)
 	state := plain.toState()
 
-	state = addRoundKey(state, schedule.round(0))
+	state = addRoundKey(state, schedule[0])
 	numRounds := key.aesConfiguration().rounds
 
 	for i := 1; i < numRounds; i++ {
@@ -16,9 +16,9 @@ func Encrypt(key Key, plain Block) Block {
 			mixColumns(
 				shiftRows(
 					subBytes(state))),
-			schedule.round(i))
+			schedule[i])
 	}
 
-	state = addRoundKey(shiftRows(subBytes(state)), schedule.round(numRounds))
+	state = addRoundKey(shiftRows(subBytes(state)), schedule[numRounds])
 	return state.toBlock()
 }

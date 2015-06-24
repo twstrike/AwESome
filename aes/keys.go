@@ -43,17 +43,17 @@ func parseKey(key HexString) Key {
 	panic("wrong key length")
 }
 
-func (key Key128) newKeySchedule() keySchedule {
+func (key Key128) newKeySchedule() KeySchedule {
 	s := keyExpand(key[:], key.aesConfiguration().rounds)
 	return collectRoundSchedule(s, key)
 }
 
-func (key Key192) newKeySchedule() keySchedule {
+func (key Key192) newKeySchedule() KeySchedule {
 	s := keyExpand(key[:], key.aesConfiguration().rounds)
 	return collectRoundSchedule(s, key)
 }
 
-func (key Key256) newKeySchedule() keySchedule {
+func (key Key256) newKeySchedule() KeySchedule {
 	s := keyExpand(key[:], key.aesConfiguration().rounds)
 	return collectRoundSchedule(s, key)
 }
