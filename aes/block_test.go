@@ -15,7 +15,7 @@ func (s *BlockSuite) Test_stateFromAllZeroes(c *C) {
 
 func (s *BlockSuite) Test_stateFromNonZeroes(c *C) {
 	// See AES spec, Appendix B – Cipher Example
-  res := Block{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}.toState()
+	res := Block{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}.toState()
 	c.Check(res, DeepEquals, state{
 		0x32, 0x88, 0x31, 0xe0,
 		0x43, 0x5a, 0x31, 0x37,

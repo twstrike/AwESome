@@ -12,6 +12,6 @@ func (b Block) toState() state {
 
 func (b Block) toHexString() HexString {
 
-  	encoded := hex.EncodeToString(wordsToBytes(b))
-  	return HexString(encoded)
+	encoded := hex.EncodeToString(wordsToBytes(b))
+	return HexString(encoded)
 }
