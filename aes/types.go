@@ -14,6 +14,7 @@ type state [4 * 4]byte
 type roundSchedule [4]word
 type keySchedule128 [Nr128 + 1]roundSchedule
 type keySchedule192 [Nr192 + 1]roundSchedule
+type keySchedule256 [Nr256 + 1]roundSchedule
 
 type AesConfiguration struct {
 	keyLength int

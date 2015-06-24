@@ -55,6 +55,20 @@ func (s keySchedule192) round(i int) roundSchedule {
 	return s[i]
 }
 
+func (key Key256) newKeySchedule() keySchedule {
+	result := keySchedule256{}
+	s := newScheduleFor(key[:], Nr256)
+
+	for i := 0; i < len(result); i++ {
+		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
+	}
+
+	return result
+}
+
+func (s keySchedule256) round(i int) roundSchedule {
+	return s[i]
+}
 func subWord(w word) word {
 	out := word(0)
 	out |= word(applySBox(byte(w>>24))) << 24

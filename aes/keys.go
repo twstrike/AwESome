@@ -24,6 +24,12 @@ func parseKey192(key HexString) Key {
 	return result
 }
 
+func parseKey256(key HexString) Key {
+	var result Key256
+	hexStringToWord(key, &result)
+	return result
+}
+
 func parseKey(key HexString) Key {
 	switch len(string(key)) {
 	case 32:
@@ -31,7 +37,8 @@ func parseKey(key HexString) Key {
 	case 48:
 		return parseKey192(key)
 	case 64:
-		return parseKey128(key)
+		return parseKey256(key)
 	}
-	return Key128{}
+
+	panic("wrong key length")
 }
