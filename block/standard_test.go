@@ -138,3 +138,35 @@ var ctrAES128Vector = TestVector{
 		},
 	},
 }
+
+func testOnEncrypt(bm BlockMode, tv TestVector, c *C) {
+	plain := ""
+	cipher := ""
+	for b := range tv.blocks {
+		plain += tv.blocks[b].plain
+		cipher += tv.blocks[b].cipher
+	}
+	result := bm.Encrypt(plain, tv.key)
+	c.Assert(result, Equals, cipher)
+}
+
+func testOnDecrypt(bm BlockMode, tv TestVector, c *C) {
+	plain := ""
+	cipher := ""
+	for b := range tv.blocks {
+		plain += tv.blocks[b].plain
+		cipher += tv.blocks[b].cipher
+	}
+	result := bm.Decrypt(cipher, tv.key)
+	c.Assert(result, Equals, plain)
+}
+
+func (s *ECBSuite) TestECBEncryptAES128(c *C) {
+	bm := ECB{}
+	testOnEncrypt(bm, ecbAES128Vector, c)
+}
+
+func (s *ECBSuite) TestECBDecryptAES128(c *C) {
+	bm := ECB{}
+	testOnEncrypt(bm, ecbAES128Vector, c)
+}
