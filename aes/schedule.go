@@ -4,23 +4,33 @@ import (
 	"github.com/twstrike/AwESome/rijndael"
 )
 
+func newScheduleFor(key []word, Nr uint) []word {
+	Nb := uint(4)
+	Nk := len(key)
+	result := make([]word, Nb*(Nr+1))
+
+	copy(result[:], key)
+
+	for i := Nk; i < len(result); i++ {
+		temp := result[i-1]
+		if i%Nk == 0 {
+			temp = subWord(rotWord(temp)) ^ rcon(i/Nk)
+		} else if Nk > 6 && i%Nk == 4 {
+			temp = subWord(temp)
+		}
+
+		result[i] = result[i-Nk] ^ temp
+	}
+
+	return result
+}
+
 func (key Key128) newKeySchedule() keySchedule {
 	result := keySchedule128{}
-	result[0][0] = key[0]
-	result[0][1] = key[1]
-	result[0][2] = key[2]
-	result[0][3] = key[3]
+	s := newScheduleFor(key[:], Nr128)
 
-	for i := 1; i <= Nr128; i++ {
-		prev := result[i-1]
-		w0 := prev[0] ^ (subWord(rotWord(prev[3])) ^ rcon(i))
-		w1 := prev[1] ^ w0
-		w2 := prev[2] ^ w1
-		w3 := prev[3] ^ w2
-		result[i][0] = w0
-		result[i][1] = w1
-		result[i][2] = w2
-		result[i][3] = w3
+	for i := 0; i < len(result); i++ {
+		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
 	}
 
 	return result
