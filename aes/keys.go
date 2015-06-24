@@ -42,3 +42,40 @@ func parseKey(key HexString) Key {
 
 	panic("wrong key length")
 }
+
+func (key Key128) newKeySchedule() keySchedule {
+	result := make(KeySchedule, key.aesConfiguration().rounds+1)
+	s := newScheduleFor(key[:], key.aesConfiguration().rounds)
+
+	for i := 0; i < key.aesConfiguration().rounds+1; i++ {
+		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
+	}
+
+	return result
+}
+
+func (key Key192) newKeySchedule() keySchedule {
+	result := make(KeySchedule, key.aesConfiguration().rounds+1)
+	s := newScheduleFor(key[:], key.aesConfiguration().rounds)
+
+	for i := 0; i < key.aesConfiguration().rounds+1; i++ {
+		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
+	}
+
+	return result
+}
+
+func (key Key256) newKeySchedule() keySchedule {
+	result := make(KeySchedule, key.aesConfiguration().rounds+1)
+	s := newScheduleFor(key[:], key.aesConfiguration().rounds)
+
+	for i := 0; i < key.aesConfiguration().rounds+1; i++ {
+		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
+	}
+
+	return result
+}
+
+func (s KeySchedule) round(i int) roundSchedule {
+	return s[i]
+}

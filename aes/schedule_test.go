@@ -73,7 +73,7 @@ func (s *StandardScheduleSuite) TestNewSchedule256(c *C) {
 
 func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 	key := Key128{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c}
-	expected := keySchedule128{
+	expected := KeySchedule{
 		roundSchedule{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c},
 		roundSchedule{0xa0fafe17, 0x88542cb1, 0x23a33939, 0x2a6c7605},
 		roundSchedule{0xf2c295f2, 0x7a96b943, 0x5935807a, 0x7359f67f},
