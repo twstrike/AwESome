@@ -1,6 +1,7 @@
 package block
 
 import (
+	"github.com/twstrike/AwESome/aes"
 	. "gopkg.in/check.v1"
 	"testing"
 )
@@ -139,34 +140,34 @@ var ctrAES128Vector = TestVector{
 	},
 }
 
-func testOnEncrypt(bm BlockMode, tv TestVector, c *C) {
+func testOnEncrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
 	plain := ""
 	cipher := ""
 	for b := range tv.blocks {
 		plain += tv.blocks[b].plain
 		cipher += tv.blocks[b].cipher
 	}
-	result := bm.Encrypt(plain, tv.key)
+	result := bm.Encrypt(plain, tv.key, bc)
 	c.Assert(result, Equals, cipher)
 }
 
-func testOnDecrypt(bm BlockMode, tv TestVector, c *C) {
+func testOnDecrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
 	plain := ""
 	cipher := ""
 	for b := range tv.blocks {
 		plain += tv.blocks[b].plain
 		cipher += tv.blocks[b].cipher
 	}
-	result := bm.Decrypt(cipher, tv.key)
+	result := bm.Decrypt(cipher, tv.key, bc)
 	c.Assert(result, Equals, plain)
 }
 
 func (s *ECBSuite) TestECBEncryptAES128(c *C) {
 	bm := ECB{}
-	testOnEncrypt(bm, ecbAES128Vector, c)
+	testOnEncrypt(bm, aes.BlockCipher, ecbAES128Vector, c)
 }
 
 func (s *ECBSuite) TestECBDecryptAES128(c *C) {
 	bm := ECB{}
-	testOnEncrypt(bm, ecbAES128Vector, c)
+	testOnDecrypt(bm, aes.BlockCipher, ecbAES128Vector, c)
 }
