@@ -4,7 +4,7 @@ import (
 	"github.com/twstrike/AwESome/rijndael"
 )
 
-func newScheduleFor(key []word, Nr int) []word {
+func keyExpand(key []word, Nr int) []word {
 	Nb := int(4)
 	Nk := len(key)
 	result := make([]word, Nb*(Nr+1))
@@ -25,6 +25,14 @@ func newScheduleFor(key []word, Nr int) []word {
 	return result
 }
 
+func collectRoundSchedule(s []word, key Key) keySchedule {
+	result := make(KeySchedule, key.aesConfiguration().rounds+1)
+	for i := 0; i < key.aesConfiguration().rounds+1; i++ {
+		result[i] = roundSchedule{s[i*4+0], s[i*4+1], s[i*4+2], s[i*4+3]}
+	}
+	return result
+}
+
 func subWord(w word) word {
 	out := word(0)
 	out |= word(applySBox(byte(w>>24))) << 24
@@ -32,6 +40,10 @@ func subWord(w word) word {
 	out |= word(applySBox(byte(w>>8))) << 8
 	out |= word(applySBox(byte(w>>0))) << 0
 	return out
+}
+
+func (s KeySchedule) round(i int) roundSchedule {
+	return s[i]
 }
 
 func rotWord(w word) word {

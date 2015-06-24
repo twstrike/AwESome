@@ -24,7 +24,7 @@ func (s *StandardScheduleSuite) TestNewSchedule128(c *C) {
 		0xd014f9a8, 0xc9ee2589, 0xe13f0cc8, 0xb6630ca6,
 	}
 
-	c.Check(newScheduleFor(key, Nr128), DeepEquals, expected)
+	c.Check(keyExpand(key, Nr128), DeepEquals, expected)
 }
 
 func (s *StandardScheduleSuite) TestNewSchedule192(c *C) {
@@ -45,7 +45,7 @@ func (s *StandardScheduleSuite) TestNewSchedule192(c *C) {
 		0xa4970a33, 0x1a78dc09, 0xc418c271, 0xe3a41d5d,
 	}
 
-	c.Check(newScheduleFor(key, Nr192), DeepEquals, expected)
+	c.Check(keyExpand(key, Nr192), DeepEquals, expected)
 }
 
 func (s *StandardScheduleSuite) TestNewSchedule256(c *C) {
@@ -68,7 +68,7 @@ func (s *StandardScheduleSuite) TestNewSchedule256(c *C) {
 		0x24fc79cc, 0xbf0979e9, 0x371ac23c, 0x6d68de36,
 	}
 
-	c.Check(newScheduleFor(key, Nr256), DeepEquals, expected)
+	c.Check(keyExpand(key, Nr256), DeepEquals, expected)
 }
 
 func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
@@ -92,7 +92,7 @@ func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 
 func (s *StandardScheduleSuite) TestScheduleFor192(c *C) {
 	key := Key192{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617}
-	expected := keySchedule192{
+	expected := KeySchedule{
 		roundSchedule{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
 		roundSchedule{0x10111213, 0x14151617, 0x5846f2f9, 0x5c43f4fe},
 		roundSchedule{0x544afef5, 0x5847f0fa, 0x4856e2e9, 0x5c43f4fe},
@@ -113,7 +113,7 @@ func (s *StandardScheduleSuite) TestScheduleFor192(c *C) {
 
 func (s *StandardScheduleSuite) TestScheduleFor256(c *C) {
 	key := Key256{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617, 0x18191a1b, 0x1c1d1e1f}
-	expected := keySchedule256{
+	expected := KeySchedule{
 		roundSchedule{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
 		roundSchedule{0x10111213, 0x14151617, 0x18191a1b, 0x1c1d1e1f},
 		roundSchedule{0xa573c29f, 0xa176c498, 0xa97fce93, 0xa572c09c},
