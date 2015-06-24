@@ -1,9 +1,9 @@
 package aes
 
-const Nr128 = 10
-const Nr192 = 12
-const Nr256 = 14
+const nr128 = 10
+const nr192 = 12
+const nr256 = 14
 
-var Aes128 = aesConfiguration{128, Nr128}
-var Aes192 = aesConfiguration{192, Nr192}
-var Aes256 = aesConfiguration{256, Nr256}
+var aes128 = aesConfiguration{128, nr128}
+var aes192 = aesConfiguration{192, nr192}
+var aes256 = aesConfiguration{256, nr256}

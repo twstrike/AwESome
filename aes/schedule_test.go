@@ -24,7 +24,7 @@ func (s *StandardScheduleSuite) TestNewSchedule128(c *C) {
 		0xd014f9a8, 0xc9ee2589, 0xe13f0cc8, 0xb6630ca6,
 	}
 
-	c.Check(keyExpand(key, Nr128), DeepEquals, expected)
+	c.Check(keyExpand(key, nr128), DeepEquals, expected)
 }
 
 func (s *StandardScheduleSuite) TestNewSchedule192(c *C) {
@@ -45,7 +45,7 @@ func (s *StandardScheduleSuite) TestNewSchedule192(c *C) {
 		0xa4970a33, 0x1a78dc09, 0xc418c271, 0xe3a41d5d,
 	}
 
-	c.Check(keyExpand(key, Nr192), DeepEquals, expected)
+	c.Check(keyExpand(key, nr192), DeepEquals, expected)
 }
 
 func (s *StandardScheduleSuite) TestNewSchedule256(c *C) {
@@ -68,7 +68,7 @@ func (s *StandardScheduleSuite) TestNewSchedule256(c *C) {
 		0x24fc79cc, 0xbf0979e9, 0x371ac23c, 0x6d68de36,
 	}
 
-	c.Check(keyExpand(key, Nr256), DeepEquals, expected)
+	c.Check(keyExpand(key, nr256), DeepEquals, expected)
 }
 
 func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
