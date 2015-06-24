@@ -389,7 +389,6 @@ func (s *GladmanAESSuite) TestGladman192Encrypting(c *C) {
 }
 
 func (s *GladmanAESSuite) TestGladman192Decrypting(c *C) {
-	c.Skip("Not yet implemented.")
 	testDecryptingOn(testGladman192Decrypting, c)
 }
 
@@ -412,12 +411,10 @@ func (s *StandardAESSuite) TestStandard128Decrypting(c *C) {
 }
 
 func (s *StandardAESSuite) TestStandard192Encrypting(c *C) {
-	c.Skip("Not yet implemented.")
 	testEncryptingOn(testAES192Encrypting, c)
 }
 
 func (s *StandardAESSuite) TestStandard192Decrypting(c *C) {
-	c.Skip("Not yet implemented.")
 	testDecryptingOn(testAES192Decrypting, c)
 }
 

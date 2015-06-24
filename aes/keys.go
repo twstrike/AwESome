@@ -18,12 +18,18 @@ func parseKey128(key HexString) Key {
 	return result
 }
 
+func parseKey192(key HexString) Key {
+	var result Key192
+	hexStringToWord(key, &result)
+	return result
+}
+
 func parseKey(key HexString) Key {
 	switch len(string(key)) {
 	case 32:
 		return parseKey128(key)
 	case 48:
-		return parseKey128(key)
+		return parseKey192(key)
 	case 64:
 		return parseKey128(key)
 	}
