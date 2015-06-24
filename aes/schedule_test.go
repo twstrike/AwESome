@@ -90,6 +90,49 @@ func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 	c.Check(scheduleFor(key), DeepEquals, expected)
 }
 
+func (s *StandardScheduleSuite) TestScheduleFor192(c *C) {
+	key := Key192{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617}
+	expected := keySchedule192{
+		roundSchedule{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
+		roundSchedule{0x10111213, 0x14151617, 0x5846f2f9, 0x5c43f4fe},
+		roundSchedule{0x544afef5, 0x5847f0fa, 0x4856e2e9, 0x5c43f4fe},
+		roundSchedule{0x40f949b3, 0x1cbabd4d, 0x48f043b8, 0x10b7b342},
+		roundSchedule{0x58e151ab, 0x04a2a555, 0x7effb541, 0x6245080c},
+		roundSchedule{0x2ab54bb4, 0x3a02f8f6, 0x62e3a95d, 0x66410c08},
+		roundSchedule{0xf5018572, 0x97448d7e, 0xbdf1c6ca, 0x87f33e3c},
+		roundSchedule{0xe5109761, 0x83519b69, 0x34157c9e, 0xa351f1e0},
+		roundSchedule{0x1ea0372a, 0x99530916, 0x7c439e77, 0xff12051e},
+		roundSchedule{0xdd7e0e88, 0x7e2fff68, 0x608fc842, 0xf9dcc154},
+		roundSchedule{0x859f5f23, 0x7a8d5a3d, 0xc0c02952, 0xbeefd63a},
+		roundSchedule{0xde601e78, 0x27bcdf2c, 0xa223800f, 0xd8aeda32},
+		roundSchedule{0xa4970a33, 0x1a78dc09, 0xc418c271, 0xe3a41d5d},
+	}
+
+	c.Check(scheduleFor(key), DeepEquals, expected)
+}
+
+func (s *StandardScheduleSuite) TestScheduleFor256(c *C) {
+	key := Key256{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617, 0x18191a1b, 0x1c1d1e1f}
+	expected := keySchedule256{
+		roundSchedule{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
+		roundSchedule{0x10111213, 0x14151617, 0x18191a1b, 0x1c1d1e1f},
+		roundSchedule{0xa573c29f, 0xa176c498, 0xa97fce93, 0xa572c09c},
+		roundSchedule{0x1651a8cd, 0x0244beda, 0x1a5da4c1, 0x0640bade},
+		roundSchedule{0xae87dff0, 0x0ff11b68, 0xa68ed5fb, 0x03fc1567},
+		roundSchedule{0x6de1f148, 0x6fa54f92, 0x75f8eb53, 0x73b8518d},
+		roundSchedule{0xc656827f, 0xc9a79917, 0x6f294cec, 0x6cd5598b},
+		roundSchedule{0x3de23a75, 0x524775e7, 0x27bf9eb4, 0x5407cf39},
+		roundSchedule{0x0bdc905f, 0xc27b0948, 0xad5245a4, 0xc1871c2f},
+		roundSchedule{0x45f5a660, 0x17b2d387, 0x300d4d33, 0x640a820a},
+		roundSchedule{0x7ccff71c, 0xbeb4fe54, 0x13e6bbf0, 0xd261a7df},
+		roundSchedule{0xf01afafe, 0xe7a82979, 0xd7a5644a, 0xb3afe640},
+		roundSchedule{0x2541fe71, 0x9bf50025, 0x8813bbd5, 0x5a721c0a},
+		roundSchedule{0x4e5a6699, 0xa9f24fe0, 0x7e572baa, 0xcdf8cdea},
+		roundSchedule{0x24fc79cc, 0xbf0979e9, 0x371ac23c, 0x6d68de36},
+	}
+
+	c.Check(scheduleFor(key), DeepEquals, expected)
+}
 func (s *StandardScheduleSuite) Test_rotWord(c *C) {
 	c.Check(rotWord(0xABCDEF12), Equals, word(0xCDEF12AB))
 }
