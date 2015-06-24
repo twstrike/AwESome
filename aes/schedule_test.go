@@ -73,7 +73,7 @@ func (s *StandardScheduleSuite) TestNewSchedule256(c *C) {
 
 func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 	key := Key128{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c}
-	expected := KeySchedule{
+	expected := keySchedule{
 		roundSchedule{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c},
 		roundSchedule{0xa0fafe17, 0x88542cb1, 0x23a33939, 0x2a6c7605},
 		roundSchedule{0xf2c295f2, 0x7a96b943, 0x5935807a, 0x7359f67f},
@@ -92,7 +92,7 @@ func (s *StandardScheduleSuite) TestScheduleFor128(c *C) {
 
 func (s *StandardScheduleSuite) TestScheduleFor192(c *C) {
 	key := Key192{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617}
-	expected := KeySchedule{
+	expected := keySchedule{
 		roundSchedule{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
 		roundSchedule{0x10111213, 0x14151617, 0x5846f2f9, 0x5c43f4fe},
 		roundSchedule{0x544afef5, 0x5847f0fa, 0x4856e2e9, 0x5c43f4fe},
@@ -113,7 +113,7 @@ func (s *StandardScheduleSuite) TestScheduleFor192(c *C) {
 
 func (s *StandardScheduleSuite) TestScheduleFor256(c *C) {
 	key := Key256{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617, 0x18191a1b, 0x1c1d1e1f}
-	expected := KeySchedule{
+	expected := keySchedule{
 		roundSchedule{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f},
 		roundSchedule{0x10111213, 0x14151617, 0x18191a1b, 0x1c1d1e1f},
 		roundSchedule{0xa573c29f, 0xa176c498, 0xa97fce93, 0xa572c09c},

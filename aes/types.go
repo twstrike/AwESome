@@ -12,14 +12,14 @@ type Block [4]word
 type state [4 * 4]byte
 
 type roundSchedule [4]word
-type KeySchedule []roundSchedule
+type keySchedule []roundSchedule
 
-type AesConfiguration struct {
+type aesConfiguration struct {
 	keyLength int
 	rounds    int
 }
 
 type Key interface {
-	aesConfiguration() AesConfiguration
-	newKeySchedule() KeySchedule
+	aesConfiguration() aesConfiguration
+	newKeySchedule() keySchedule
 }

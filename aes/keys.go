@@ -1,14 +1,14 @@
 package aes
 
-func (k Key128) aesConfiguration() AesConfiguration {
+func (k Key128) aesConfiguration() aesConfiguration {
 	return Aes128
 }
 
-func (k Key192) aesConfiguration() AesConfiguration {
+func (k Key192) aesConfiguration() aesConfiguration {
 	return Aes192
 }
 
-func (k Key256) aesConfiguration() AesConfiguration {
+func (k Key256) aesConfiguration() aesConfiguration {
 	return Aes256
 }
 
@@ -43,17 +43,17 @@ func parseKey(key HexString) Key {
 	panic("wrong key length")
 }
 
-func (key Key128) newKeySchedule() KeySchedule {
+func (key Key128) newKeySchedule() keySchedule {
 	s := keyExpand(key[:], key.aesConfiguration().rounds)
 	return collectRoundSchedule(s, key)
 }
 
-func (key Key192) newKeySchedule() KeySchedule {
+func (key Key192) newKeySchedule() keySchedule {
 	s := keyExpand(key[:], key.aesConfiguration().rounds)
 	return collectRoundSchedule(s, key)
 }
 
-func (key Key256) newKeySchedule() KeySchedule {
+func (key Key256) newKeySchedule() keySchedule {
 	s := keyExpand(key[:], key.aesConfiguration().rounds)
 	return collectRoundSchedule(s, key)
 }
