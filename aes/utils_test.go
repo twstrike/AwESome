@@ -31,21 +31,6 @@ func nospc(s string) HexString {
 	return HexString(strings.Replace(s, " ", "", -1))
 }
 
-func (s *UtilsSuite) TestParseKeyWithAllZeroes(c *C) {
-	res := parseKey("00000000000000000000000000000000")
-	c.Check(res, DeepEquals, Key128{0, 0, 0, 0})
-}
-
-func (s *UtilsSuite) TestParseKeyWithAOne(c *C) {
-	res := parseKey("00000000000000000000000000000001")
-	c.Check(res, DeepEquals, Key128{0, 0, 0, 1})
-}
-
-func (s *UtilsSuite) TestParseKeyWithSpaces(c *C) {
-	res := parseKey(nospc("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01"))
-	c.Check(res, DeepEquals, Key128{0, 0, 0, 1})
-}
-
 func (s *UtilsSuite) TestParsePlainTextWithAllZeroes(c *C) {
 	res := HexString("00000000000000000000000000000000").toBlock()
 	c.Check(res, DeepEquals, Block{0, 0, 0, 0})

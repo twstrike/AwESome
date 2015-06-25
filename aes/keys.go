@@ -1,5 +1,10 @@
 package aes
 
+import (
+	"encoding/hex"
+	"fmt"
+)
+
 func (k Key128) aesConfiguration() aesConfiguration {
 	return aes128
 }
@@ -12,35 +17,40 @@ func (k Key256) aesConfiguration() aesConfiguration {
 	return aes256
 }
 
-func parseKey128(key HexString) Key {
+func parseKeyHex(key HexString) Key {
+	decodes, _ := hex.DecodeString(string(key))
+	return parseKeyFromBytes(decodes)
+}
+
+func parseKey128(key []byte) Key {
 	var result Key128
-	hexStringToWord(key, &result)
+	bytesToWord(key, &result)
 	return result
 }
 
-func parseKey192(key HexString) Key {
+func parseKey192(key []byte) Key {
 	var result Key192
-	hexStringToWord(key, &result)
+	bytesToWord(key, &result)
 	return result
 }
 
-func parseKey256(key HexString) Key {
+func parseKey256(key []byte) Key {
 	var result Key256
-	hexStringToWord(key, &result)
+	bytesToWord(key, &result)
 	return result
 }
 
-func parseKey(key HexString) Key {
-	switch len(string(key)) {
-	case 32:
+func parseKeyFromBytes(key []byte) Key {
+	switch len(key) {
+	case 16:
 		return parseKey128(key)
-	case 48:
+	case 24:
 		return parseKey192(key)
-	case 64:
+	case 32:
 		return parseKey256(key)
 	}
 
-	panic("wrong key length")
+	panic(fmt.Sprintf("wrong key length: %d\n", len(key)))
 }
 
 func (k Key128) newKeySchedule() keySchedule {
