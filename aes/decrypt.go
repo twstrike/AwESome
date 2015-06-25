@@ -1,7 +1,15 @@
 package aes
 
 func DecryptHex(key, cipher HexString) HexString {
-	return Decrypt(parseKey(key), cipher.toBlock()).toHexString()
+	return Decrypt(parseKeyHex(key), cipher.toBlock()).toHexString()
+}
+
+func DecryptBytes(key, cipher []byte) []byte {
+	k := parseKeyFromBytes(key)
+	c := Block{}
+	bytesToWord(cipher, &c)
+
+	return wordsToBytes(Decrypt(k, c))
 }
 
 func Decrypt(key Key, cipher Block) Block {
