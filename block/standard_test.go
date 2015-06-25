@@ -147,7 +147,7 @@ func testOnEncrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
 		plain += tv.blocks[b].plain
 		cipher += tv.blocks[b].cipher
 	}
-	result := bm.Encrypt(plain, tv.key, bc)
+	result := bm.Encrypt(tv.key, plain, bc)
 	c.Assert(result, Equals, cipher)
 }
 
@@ -158,7 +158,7 @@ func testOnDecrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
 		plain += tv.blocks[b].plain
 		cipher += tv.blocks[b].cipher
 	}
-	result := bm.Decrypt(cipher, tv.key, bc)
+	result := bm.Decrypt(tv.key, cipher, bc)
 	c.Assert(result, Equals, plain)
 }
 

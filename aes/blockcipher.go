@@ -8,10 +8,10 @@ func (b blockCipher) BlockSize() int {
 	return 128
 }
 
-func (b blockCipher) Encrypt(plainText, key []byte) []byte {
+func (b blockCipher) Encrypt(key, plainText []byte) []byte {
 	return EncryptBytes(key, plainText)
 }
 
-func (b blockCipher) Decrypt(cipherText, key []byte) []byte {
+func (b blockCipher) Decrypt(key, cipherText []byte) []byte {
 	return DecryptBytes(key, cipherText)
 }

@@ -2,6 +2,6 @@ package block
 
 type BlockCipher interface {
 	BlockSize() int
-	Encrypt(block, key []byte) []byte
-	Decrypt(block, key []byte) []byte
+	Encrypt(key, plain []byte) []byte
+	Decrypt(key, cipher []byte) []byte
 }
