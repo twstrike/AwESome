@@ -1,6 +1,7 @@
 package aes_test
 
 import (
+	"encoding/hex"
 	"github.com/twstrike/AwESome/aes"
 	. "gopkg.in/check.v1"
 	"strings"
@@ -343,11 +344,15 @@ func extractDataFrom(data string) string {
 }
 
 func encrypt(plain, key string) string {
-	return string(aes.EncryptHex(aes.HexString(key), aes.HexString(plain)))
+	plainBytes, _ := hex.DecodeString(plain)
+	keyBytes, _ := hex.DecodeString(key)
+	return hex.EncodeToString(aes.EncryptBytes(keyBytes, plainBytes))
 }
 
 func decrypt(cipher, key string) string {
-	return string(aes.DecryptHex(aes.HexString(key), aes.HexString(cipher)))
+	cipherBytes, _ := hex.DecodeString(cipher)
+	keyBytes, _ := hex.DecodeString(key)
+	return hex.EncodeToString(aes.DecryptBytes(keyBytes, cipherBytes))
 }
 
 func parseEncryptionData(data []string) EncryptionTest {

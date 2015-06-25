@@ -20,21 +20,6 @@ func (s *UtilsSuite) Test_aesConfigurationOf256BitKey(c *C) {
 	c.Check(Key256{}.aesConfiguration(), Equals, aes256)
 }
 
-func (s *UtilsSuite) TestParseKeyWithAllZeroes(c *C) {
-	res := parseKeyHex("00000000000000000000000000000000")
-	c.Check(res, DeepEquals, Key128{0, 0, 0, 0})
-}
-
-func (s *UtilsSuite) TestParseKeyWithAOne(c *C) {
-	res := parseKeyHex("00000000000000000000000000000001")
-	c.Check(res, DeepEquals, Key128{0, 0, 0, 1})
-}
-
-func (s *UtilsSuite) TestParseKeyWithSpaces(c *C) {
-	res := parseKeyHex(nospc("00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 01"))
-	c.Check(res, DeepEquals, Key128{0, 0, 0, 1})
-}
-
 func (s *UtilsSuite) TestParseKeyBytes(c *C) {
 	key := []byte{
 		0x2b, 0x7e, 0x15, 0x16,

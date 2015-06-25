@@ -23,13 +23,3 @@ func (s *BlockSuite) Test_stateFromNonZeroes(c *C) {
 		0xa8, 0x8d, 0xa2, 0x34,
 	})
 }
-
-func (s *BlockSuite) TestToHexStringWithAllZeroes(c *C) {
-	res := Block{0, 0, 0, 0}.toHexString()
-	c.Check(res, DeepEquals, HexString("00000000000000000000000000000000"))
-}
-
-func (s *BlockSuite) TestWordToHexStringWith4Words(c *C) {
-	res := Block{0x3243f6a8, 0x885a308d, 0x313198a2, 0xe0370734}.toHexString()
-	c.Check(res, DeepEquals, HexString("3243f6a8885a308d313198a2e0370734"))
-}

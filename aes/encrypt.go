@@ -1,9 +1,5 @@
 package aes
 
-func EncryptHex(key, plain HexString) HexString {
-	return Encrypt(parseKeyHex(key), plain.toBlock()).toHexString()
-}
-
 func EncryptBytes(key, plain []byte) []byte {
 	k := parseKeyFromBytes(key)
 	p := Block{}

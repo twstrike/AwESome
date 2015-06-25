@@ -1,7 +1,5 @@
 package aes
 
-type HexString string
-
 type word uint32
 type Key128 [4]word
 type Key192 [6]word

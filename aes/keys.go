@@ -1,7 +1,6 @@
 package aes
 
 import (
-	"encoding/hex"
 	"fmt"
 )
 
@@ -15,11 +14,6 @@ func (k Key192) aesConfiguration() aesConfiguration {
 
 func (k Key256) aesConfiguration() aesConfiguration {
 	return aes256
-}
-
-func parseKeyHex(key HexString) Key {
-	decodes, _ := hex.DecodeString(string(key))
-	return parseKeyFromBytes(decodes)
 }
 
 func parseKey128(key []byte) Key {
