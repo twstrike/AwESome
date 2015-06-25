@@ -1,8 +1,6 @@
 package block
 
-type ECB struct{}
-
 type BlockMode interface {
-	Encrypt(plain, key string, bc BlockCipher) string
-	Decrypt(plain, key string, bc BlockCipher) string
+	Encrypt(plain, key []byte, bc BlockCipher) []byte
+	Decrypt(plain, key []byte, bc BlockCipher) []byte
 }
