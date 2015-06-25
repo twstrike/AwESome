@@ -5,34 +5,42 @@ import (
 	"encoding/hex"
 )
 
-type BlockCipher interface {
-	BlockSize() int
-	Encrypt(block, key string) string
-	Decrypt(block, key string) string
+func (bm ECB) Encrypt(plainText, key string, blockCipher BlockCipher) string {
+	p, _ := hex.DecodeString(plainText)
+	k, _ := hex.DecodeString(key)
+
+	ret := bm.encryptBytes(p, k, blockCipher)
+	return hex.EncodeToString(ret)
 }
 
-func (bm ECB) Encrypt(plainText, key string, cipher BlockCipher) string {
-	data, _ := hex.DecodeString(plainText)
-	reader := bytes.NewBuffer(data)
-	cipherText := ""
+func (bm ECB) encryptBytes(plain, key []byte, blockCipher BlockCipher) []byte {
+	reader := bytes.NewBuffer(plain)
+	cipher := make([]byte, 0, len(plain))
 
 	for reader.Len() > 0 {
-		block := reader.Next(cipher.BlockSize() / 8)
-		cipherText += cipher.Encrypt(hex.EncodeToString(block), key)
+		block := reader.Next(blockCipher.BlockSize() / 8)
+		cipher = append(cipher, blockCipher.Encrypt(block, key)...)
 	}
 
-	return cipherText
+	return cipher
 }
 
-func (bm ECB) Decrypt(cipherText, key string, cipher BlockCipher) string {
-	data, _ := hex.DecodeString(cipherText)
-	reader := bytes.NewBuffer(data)
-	plainText := ""
+func (bm ECB) Decrypt(cipherText, key string, blockCipher BlockCipher) string {
+	c, _ := hex.DecodeString(cipherText)
+	k, _ := hex.DecodeString(key)
+
+	ret := bm.decryptBytes(c, k, blockCipher)
+	return hex.EncodeToString(ret)
+}
+
+func (bm ECB) decryptBytes(cipher, key []byte, blockCipher BlockCipher) []byte {
+	reader := bytes.NewBuffer(cipher)
+	plain := make([]byte, 0, len(cipher))
 
 	for reader.Len() > 0 {
-		block := reader.Next(cipher.BlockSize() / 8)
-		plainText += cipher.Decrypt(hex.EncodeToString(block), key)
+		block := reader.Next(blockCipher.BlockSize() / 8)
+		plain = append(plain, blockCipher.Decrypt(block, key)...)
 	}
 
-	return plainText
+	return plain
 }
