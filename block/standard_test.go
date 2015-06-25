@@ -38,16 +38,6 @@ var _ = Suite(&CTRSuite{})
 
 // Data from: http://csrc.nist.gov/publications/nistpubs/800-38a/sp800-38a.pdf
 
-type Block struct {
-	plain, cipher string
-}
-
-type TestVector struct {
-	key    string
-	iv     string
-	blocks []Block
-}
-
 var ecbAES128Vector = TestVector{
 	"2b7e151628aed2a6abf7158809cf4f3c",
 	"",
@@ -140,28 +130,6 @@ var ctrAES128Vector = TestVector{
 	},
 }
 
-func testOnEncrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
-	plain := ""
-	cipher := ""
-	for b := range tv.blocks {
-		plain += tv.blocks[b].plain
-		cipher += tv.blocks[b].cipher
-	}
-	result := bm.Encrypt(tv.key, plain, bc)
-	c.Assert(result, Equals, cipher)
-}
-
-func testOnDecrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
-	plain := ""
-	cipher := ""
-	for b := range tv.blocks {
-		plain += tv.blocks[b].plain
-		cipher += tv.blocks[b].cipher
-	}
-	result := bm.Decrypt(tv.key, cipher, bc)
-	c.Assert(result, Equals, plain)
-}
-
 func (s *ECBSuite) TestECBEncryptAES128(c *C) {
 	bm := ECB{}
 	testOnEncrypt(bm, aes.BlockCipher, ecbAES128Vector, c)
@@ -170,4 +138,14 @@ func (s *ECBSuite) TestECBEncryptAES128(c *C) {
 func (s *ECBSuite) TestECBDecryptAES128(c *C) {
 	bm := ECB{}
 	testOnDecrypt(bm, aes.BlockCipher, ecbAES128Vector, c)
+}
+
+func (s *ECBSuite) TestECBEncryptAES192(c *C) {
+	bm := ECB{}
+	testOnEncrypt(bm, aes.BlockCipher, ecbAES192Vector, c)
+}
+
+func (s *ECBSuite) TestECBDecryptAES192(c *C) {
+	bm := ECB{}
+	testOnDecrypt(bm, aes.BlockCipher, ecbAES192Vector, c)
 }
