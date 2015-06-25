@@ -1,6 +1,7 @@
 package block
 
 import (
+	"encoding/hex"
 	"github.com/twstrike/AwESome/aes"
 	. "gopkg.in/check.v1"
 	"testing"
@@ -148,4 +149,16 @@ func (s *ECBSuite) TestECBEncryptAES192(c *C) {
 func (s *ECBSuite) TestECBDecryptAES192(c *C) {
 	bm := ECB{}
 	testOnDecrypt(bm, aes.BlockCipher, ecbAES192Vector, c)
+}
+
+func (s *CBCSuite) TestCBCEncryptAES128(c *C) {
+	iv, _ := hex.DecodeString(cbcAES128Vector.iv)
+	bm := CBC{IV: iv}
+	testOnEncrypt(bm, aes.BlockCipher, cbcAES128Vector, c)
+}
+
+func (s *CBCSuite) TestCBCDecryptAES128(c *C) {
+	iv, _ := hex.DecodeString(cbcAES128Vector.iv)
+	bm := CBC{IV: iv}
+	testOnDecrypt(bm, aes.BlockCipher, cbcAES128Vector, c)
 }
