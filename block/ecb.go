@@ -15,11 +15,12 @@ func (bm ECB) Encrypt(key, plainText string, blockCipher BlockCipher) string {
 
 func (bm ECB) encryptBytes(key, plain []byte, blockCipher BlockCipher) []byte {
 	reader := bytes.NewBuffer(plain)
-	cipher := make([]byte, 0, len(plain))
+	cipher := make([]byte, len(plain))
+	blockSize := blockCipher.BlockSize() / 8
 
-	for reader.Len() > 0 {
-		block := reader.Next(blockCipher.BlockSize() / 8)
-		cipher = append(cipher, blockCipher.Encrypt(key, block)...)
+	for i := 0; reader.Len() > 0; i += blockSize {
+		block := reader.Next(blockSize)
+		copy(cipher[i:], blockCipher.Encrypt(key, block))
 	}
 
 	return cipher
@@ -35,11 +36,12 @@ func (bm ECB) Decrypt(key, cipherText string, blockCipher BlockCipher) string {
 
 func (bm ECB) decryptBytes(key, cipher []byte, blockCipher BlockCipher) []byte {
 	reader := bytes.NewBuffer(cipher)
-	plain := make([]byte, 0, len(cipher))
+	plain := make([]byte, len(cipher))
+	blockSize := blockCipher.BlockSize() / 8
 
-	for reader.Len() > 0 {
+	for i := 0; reader.Len() > 0; i += blockSize {
 		block := reader.Next(blockCipher.BlockSize() / 8)
-		plain = append(plain, blockCipher.Decrypt(key, block)...)
+		copy(plain[i:], blockCipher.Decrypt(key, block))
 	}
 
 	return plain
