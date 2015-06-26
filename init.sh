@@ -7,7 +7,7 @@ if [[ "$CURRENT_SOURCE" != *init.sh ]]; then
     echo "  source init.sh"
 else
     CURRENT_DIR="$(cd "$(dirname "$CURRENT_SOURCE")" && pwd -P)"
-    export GOPATH=$CURRENT_DIR/.gopkg
+    export GOPATH=$CURRENT_DIR/_gopkg
     export PATH=$GOPATH/bin:$PATH
 
     mkdir -p $GOPATH
