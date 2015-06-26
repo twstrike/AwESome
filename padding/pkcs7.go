@@ -10,3 +10,10 @@ func PKCS7(block []byte, size int) []byte {
 	}
 	return padded
 }
+
+func UndoPKCS7(padded []byte) []byte {
+	pads := int(padded[len(padded)-1])
+	unpadded := make([]byte, len(padded)-pads)
+	copy(unpadded, padded[:len(padded)-pads])
+	return unpadded
+}

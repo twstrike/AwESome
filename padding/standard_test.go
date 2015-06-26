@@ -28,3 +28,9 @@ func (s *PaddingSuite) TestPKCS7PaddingCreatesAdditionalBlockWhenInputIsMultiple
 	result := PKCS7(data, 2)
 	c.Assert([]byte{0xaa, 0xbb, 0xcc, 0xdd, 0x02, 0x02}, DeepEquals, result)
 }
+
+func (s *PaddingSuite) TestUnpaddingPKCS7(c *C) {
+	data := []byte{0xaa, 0xbb, 0xcc, 0x5, 0x5, 0x5, 0x5, 0x5}
+	result := UndoPKCS7(data)
+	c.Assert([]byte{0xaa, 0xbb, 0xcc}, DeepEquals, result)
+}
