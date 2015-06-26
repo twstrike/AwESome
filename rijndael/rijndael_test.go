@@ -11,6 +11,22 @@ type RijndaelTestSuite struct{}
 
 var _ = Suite(&RijndaelTestSuite{})
 
+func (s *RijndaelTestSuite) TestAdd(c *C) {
+	var a, b byte
+	a = 0x57
+	b = 0x83
+
+	c.Assert(Add(a, b), Equals, byte(0xd4))
+}
+
+func (s *RijndaelTestSuite) TestSub(c *C) {
+	var a, b byte
+	a = 0xd4
+	b = 0x83
+
+	c.Assert(Sub(a, b), Equals, byte(0x57))
+}
+
 func (s *RijndaelTestSuite) TestMultiplication(c *C) {
 	var a, b byte
 	a = 0x57

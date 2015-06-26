@@ -8,9 +8,9 @@ type CBC struct {
 	IV []byte
 }
 
-func XOR(a, b []byte) []byte {
+func xor(a, b []byte) []byte {
 	if len(a) != len(b) {
-		panic("XOR input have different sizes")
+		panic("xor: input have different sizes")
 	}
 
 	ret := make([]byte, len(a))
@@ -26,11 +26,11 @@ func (bm CBC) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
 	cipher := make([]byte, len(plain))
 	blockSize := blockCipher.BlockSize() / 8
 
-	firstBlock := XOR(reader.Next(blockSize), bm.IV)
+	firstBlock := xor(reader.Next(blockSize), bm.IV)
 	copy(cipher[:blockSize], blockCipher.Encrypt(key, firstBlock))
 
 	for i := blockSize; reader.Len() > 0; i += blockSize {
-		block := XOR(reader.Next(blockSize), cipher[i-blockSize:i])
+		block := xor(reader.Next(blockSize), cipher[i-blockSize:i])
 		copy(cipher[i:], blockCipher.Encrypt(key, block))
 	}
 
@@ -43,11 +43,11 @@ func (bm CBC) Decrypt(key, cipher []byte, blockCipher BlockCipher) []byte {
 	blockSize := blockCipher.BlockSize() / 8
 
 	previousBlock := reader.Next(blockSize)
-	copy(plain[0:blockSize], XOR(blockCipher.Decrypt(key, previousBlock), bm.IV))
+	copy(plain[0:blockSize], xor(blockCipher.Decrypt(key, previousBlock), bm.IV))
 
 	for i := blockSize; reader.Len() > 0; i += blockSize {
 		block := reader.Next(blockSize)
-		copy(plain[i:], XOR(blockCipher.Decrypt(key, block), previousBlock))
+		copy(plain[i:], xor(blockCipher.Decrypt(key, block), previousBlock))
 		previousBlock = block
 	}
 

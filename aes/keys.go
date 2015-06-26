@@ -44,7 +44,7 @@ func parseKeyFromBytes(key []byte) Key {
 		return parseKey256(key)
 	}
 
-	panic(fmt.Sprintf("wrong key length: %d\n", len(key)))
+	panic(fmt.Sprintf("invalid key length: %d", len(key)))
 }
 
 func (k Key128) newKeySchedule() keySchedule {
