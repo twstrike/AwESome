@@ -34,3 +34,9 @@ func (s *PaddingSuite) TestUnpaddingPKCS7(c *C) {
 	result := UndoPKCS7(data)
 	c.Assert([]byte{0xaa, 0xbb, 0xcc}, DeepEquals, result)
 }
+
+func (s *PaddingSuite) TestPKCS7UnpaddingAdditionalBlock(c *C) {
+	data := []byte{0xaa, 0xbb, 0xcc, 0xdd, 0x02, 0x02}
+	result := UndoPKCS7(data)
+	c.Assert([]byte{0xaa, 0xbb, 0xcc, 0xdd}, DeepEquals, result)
+}
