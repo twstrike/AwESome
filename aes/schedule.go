@@ -11,6 +11,7 @@ func keyExpand(key []word, Nr int) []word {
 
 	copy(result[:], key)
 
+	// TODO: can we break this out for Nk > 6 and avoid the ugly if statement?
 	for i := Nk; i < len(result); i++ {
 		temp := result[i-1]
 		if i%Nk == 0 {

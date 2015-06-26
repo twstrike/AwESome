@@ -9,9 +9,9 @@ func (s state) transpose() state {
 	}
 }
 
-func (s state) toBlock() Block {
-	r := Block{}
+func (s state) toBlock() (r Block) {
 	inv := s.transpose()
+	r = Block{}
 	bytesToWord(inv[:], &r)
-	return r
+	return
 }

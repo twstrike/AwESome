@@ -21,6 +21,8 @@ func Mul(i, j byte) byte {
 func Inv(a byte) byte {
 	// We leverage a property of finite fields: a^(p^n-1) = 1 (for a ≠ 0)
 	// https://en.wikipedia.org/wiki/Finite_field_arithmetic#Multiplicative_inverse
+
+	// TODO: is this possible to do without the if-statement?
 	if a == 0 {
 		return 0
 	}

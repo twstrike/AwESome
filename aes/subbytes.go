@@ -1,21 +1,15 @@
 package aes
 
-func subBytes(s state) state {
-	out := state{}
-
+func subBytes(s state) (out state) {
 	for i, b := range s {
 		out[i] = applySBox(b)
 	}
-
-	return out
+	return
 }
 
-func invSubBytes(s state) state {
-	out := state{}
-
+func invSubBytes(s state) (out state) {
 	for i, b := range s {
 		out[i] = applyInvSBox(b)
 	}
-
-	return out
+	return
 }
