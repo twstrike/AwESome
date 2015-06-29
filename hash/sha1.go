@@ -53,7 +53,12 @@ const K60to79 = uint32(0xCA62C1D6)
 
 // Fills up the buffer from the reader. The only case when it reads less is when EOF is encountered
 func readExactly(into []byte, r io.Reader) (read int, err error) {
-	return 0, nil
+	for read < len(into) && err == nil {
+		var n int
+		n, err = r.Read(into[read:])
+		read += n
+	}
+	return
 }
 
 func (ctx *sha1Context) update(mN [sha1BlockSizeInBytes]byte) {
