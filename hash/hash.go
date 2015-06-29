@@ -1,6 +1,7 @@
 package hash
 
+import "io"
+
 type Hash interface {
-	Init()
-	Sum([]byte) []byte
+	Sum(io.Reader) []byte
 }
