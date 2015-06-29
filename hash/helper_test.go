@@ -6,17 +6,17 @@ import (
 )
 
 type TestCase struct {
-	inputs  []string
-	results []string
+	input  string
+	result string
+	repeat int
 }
 
 func testOnSum(hash Hash, tc TestCase, c *C) {
-	hash.Init()
-	inputs := tc.inputs
-	results := tc.results
-	for i := range inputs {
-		b := []byte(inputs[i])
-		r, _ := hex.DecodeString(results[i])
-		c.Assert(hash.Sum(b), DeepEquals, r)
+	current := []byte(tc.input)
+	for i := 0; i < tc.repeat; i++ {
+		current = hash.Sum(current)
 	}
+
+	r, _ := hex.DecodeString(tc.result)
+	c.Assert(current, DeepEquals, r)
 }
