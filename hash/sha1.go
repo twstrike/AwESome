@@ -74,17 +74,6 @@ func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
 	return [sha1OutputSizeInBytes]byte{}
 }
 
-type WrappedByteSlice struct {
-	slice []byte
-	from  int
-}
-
-func (bs WrappedByteSlice) Write(p []byte) (n int, err error) {
-	copy(bs.slice[bs.from:], p)
-	bs.from += len(p)
-	return len(p), nil
-}
-
 func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
 	l, err := readExactly(buffer[:], sha1.reader)
 	sha1.currentSize += uint64(l * 8)
@@ -93,11 +82,14 @@ func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
 		if l != 0 {
 			buffer[l] = 0x80
 		}
-		wrapped := WrappedByteSlice{slice: buffer[sha1BlockSizeInBytes-8:]}
-		binary.Write(wrapped, binary.BigEndian, sha1.currentSize)
+
+		w := NewSliceWritter(buffer[len(buffer)-8:])
+		binary.Write(w, binary.BigEndian, sha1.currentSize)
+
 		return true
 	} else if l < sha1BlockSizeInBytes {
 		buffer[l] = 0x80
+
 		return false
 	}
 
