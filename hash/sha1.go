@@ -1,6 +1,9 @@
 package hash
 
-import "io"
+import (
+	"encoding/binary"
+	"io"
+)
 
 type SHA1 struct{}
 type sha1Reader struct {
@@ -25,6 +28,8 @@ const sha1OutputSize = 160
 const sha1OutputSizeInBytes = sha1OutputSize / 8
 const sha1BlockSize = 512
 const sha1BlockSizeInBytes = sha1BlockSize / 8
+
+type sha1Block [sha1BlockSizeInBytes]byte
 
 func circularLeftShift(w uint32, n int) uint32 {
 	return w
@@ -69,8 +74,34 @@ func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
 	return [sha1OutputSizeInBytes]byte{}
 }
 
-func (sha1 *sha1Reader) readWithPadding(buffer [sha1BlockSizeInBytes]byte) (atEnd bool) {
-	return true
+type WrappedByteSlice struct {
+	slice []byte
+	from  int
+}
+
+func (bs WrappedByteSlice) Write(p []byte) (n int, err error) {
+	copy(bs.slice[bs.from:], p)
+	bs.from += len(p)
+	return len(p), nil
+}
+
+func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
+	l, err := readExactly(buffer[:], sha1.reader)
+	sha1.currentSize += uint64(l * 8)
+
+	if l < sha1BlockSizeInBytes-9 {
+		if l != 0 {
+			buffer[l] = 0x80
+		}
+		wrapped := WrappedByteSlice{slice: buffer[sha1BlockSizeInBytes-8:]}
+		binary.Write(wrapped, binary.BigEndian, sha1.currentSize)
+		return true
+	} else if l < sha1BlockSizeInBytes {
+		buffer[l] = 0x80
+		return false
+	}
+
+	return err == io.EOF
 }
 
 func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
