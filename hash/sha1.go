@@ -8,11 +8,21 @@ type sha1Reader struct {
 	currentSize uint64
 }
 
-func (sha1 SHA1) Sum(r io.Reader) []byte {
-	reader := sha1Reader{r, 0}
-	return reader.sum()
+type sha1Context struct {
+	A, B, C, D, E      uint32
+	H0, H1, H2, H3, H4 uint32
+	W                  [80]uint32
+	temp               uint32
 }
 
+func (sha1 SHA1) Sum(r io.Reader) []byte {
+	reader := sha1Reader{r, 0}
+	result := reader.sum()
+	return result[:]
+}
+
+const sha1OutputSize = 160
+const sha1OutputSizeInBytes = sha1OutputSize / 8
 const sha1BlockSize = 512
 const sha1BlockSizeInBytes = sha1BlockSize / 8
 
@@ -46,10 +56,18 @@ func readExactly(into []byte, r io.Reader) (read int, err error) {
 	return 0, nil
 }
 
+func (ctx *sha1Context) update(mN [sha1BlockSizeInBytes]byte) {
+	// runs the core of the algorithm
+}
+
+func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
+	return [sha1OutputSizeInBytes]byte{}
+}
+
 func (sha1 *sha1Reader) readWithPadding(buffer [sha1BlockSizeInBytes]byte) (atEnd bool) {
 	return true
 }
 
-func (sha1 *sha1Reader) sum() []byte {
-	return []byte{}
+func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
+	return [sha1OutputSizeInBytes]byte{}
 }
