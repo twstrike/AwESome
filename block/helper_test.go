@@ -2,6 +2,7 @@ package block
 
 import (
 	"encoding/hex"
+
 	. "gopkg.in/check.v1"
 )
 

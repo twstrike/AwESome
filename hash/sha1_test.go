@@ -2,8 +2,9 @@ package hash
 
 import (
 	"bytes"
-	. "gopkg.in/check.v1"
 	"io"
+
+	. "gopkg.in/check.v1"
 )
 
 func (s *SHA1Suite) TestReadExactly(c *C) {

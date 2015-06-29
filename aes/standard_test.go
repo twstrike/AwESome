@@ -2,9 +2,10 @@ package aes_test
 
 import (
 	"encoding/hex"
+	"strings"
+
 	"github.com/twstrike/AwESome/aes"
 	. "gopkg.in/check.v1"
-	"strings"
 )
 
 type GladmanAESSuite struct{}
