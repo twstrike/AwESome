@@ -107,23 +107,22 @@ func (ctx *sha1Context) init() {
 
 func (ctx *sha1Context) update(mN [sha1BlockSizeInBytes]byte) {
 	// runs the core of the algorithm
-	for t := 0; t <= 16; t += 4 {
-		ctx.W[t] = util.BytesToUint32([4]byte{mN[t], mN[t+1], mN[t+2], mN[t+3]})
+	for t := 0; t < 16; t++ {
+		ctx.W[t] = util.BytesToUint32([4]byte{mN[t*4], mN[t*4+1], mN[t*4+2], mN[t*4+3]})
 	}
-	for t := 16; t < 80; t += 4 {
+	for t := 16; t < 80; t++ {
 		ctx.W[t] = util.RotLeftUint32(ctx.W[t-3]^ctx.W[t-8]^ctx.W[t-14]^ctx.W[t-16], 1)
 	}
 
 	ctx.A, ctx.B, ctx.C, ctx.D, ctx.E = ctx.H0, ctx.H1, ctx.H2, ctx.H3, ctx.H4
 
-	for t := 0; t < 80; t += 4 {
-		T := sumUint32Modulo([]uint32{util.RotLeftUint32(ctx.A, 5), fi(t, ctx.B, ctx.C, ctx.D), ctx.E, ki(t), ctx.W[t]})
+	for t := 0; t < 80; t++ {
+		ctx.temp = sumUint32Modulo([]uint32{util.RotLeftUint32(ctx.A, 5), fi(t, ctx.B, ctx.C, ctx.D), ctx.E, ki(t), ctx.W[t]})
 		ctx.E = ctx.D
 		ctx.D = ctx.C
-		ctx.E = ctx.D
 		ctx.C = util.RotLeftUint32(ctx.B, 30)
 		ctx.B = ctx.A
-		ctx.A = T
+		ctx.A = ctx.temp
 	}
 
 	ctx.H0 = addUint32Modulo(ctx.H0, ctx.A)
