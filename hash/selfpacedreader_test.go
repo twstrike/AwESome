@@ -1,5 +1,7 @@
 package hash
 
+import "io"
+
 type selfPacedReader struct {
 	schedule [][]byte
 	round    int
