@@ -90,12 +90,11 @@ func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (hasContent bool, atE
 			if sha1.needPadding {
 				sha1.addPadding(buffer)
 				return true, true
-			} else {
-				return false, true
 			}
-		} else {
-			panic("Shouldn't happen")
+			return false, true
 		}
+
+		panic("Shouldn't happen")
 	case l == sha1BlockSizeInBytes:
 		sha1.needPadding = false
 		// add content
@@ -105,17 +104,15 @@ func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (hasContent bool, atE
 			buffer[l] = 0x80
 			sha1.addPadding(buffer)
 			return true, true
-		} else {
-			panic("Shouldn't happen")
 		}
+		panic("Shouldn't happen")
 	case l < sha1BlockSizeInBytes:
 		if err == io.EOF {
 			buffer[l] = 0x80
 			sha1.needPadding = true
 			return true, false
-		} else {
-			panic("Shouldn't happen")
 		}
+		panic("Shouldn't happen")
 	}
 
 	panic("Shouldn't happen")
