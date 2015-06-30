@@ -55,15 +55,14 @@ func f60to79(b, c, d uint32) uint32 {
 }
 
 func fi(i int, b, c, d uint32) uint32 {
-	t := i / 20
-	switch t {
-	case 0:
+	switch {
+	case 0 <= i && i <= 19:
 		return f0to19(b, c, d)
-	case 1:
+	case 20 <= i && i <= 39:
 		return f20to39(b, c, d)
-	case 2:
+	case 40 <= i && i <= 59:
 		return f40to59(b, c, d)
-	case 3:
+	case 60 <= i && i <= 79:
 		return f60to79(b, c, d)
 	}
 	return 0
@@ -75,15 +74,14 @@ const K40to59 = uint32(0x8F1BBCDC)
 const K60to79 = uint32(0xCA62C1D6)
 
 func ki(i int) uint32 {
-	t := i / 20
-	switch t {
-	case 0:
+	switch {
+	case 0 <= i && i <= 19:
 		return K0to19
-	case 1:
+	case 20 <= i && i <= 39:
 		return K20to39
-	case 2:
+	case 40 <= i && i <= 59:
 		return K40to59
-	case 3:
+	case 60 <= i && i <= 79:
 		return K60to79
 	}
 	return 0
