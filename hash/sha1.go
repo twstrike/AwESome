@@ -1,20 +1,21 @@
 package hash
 
 import (
-	"encoding/binary"
 	"io"
 
 	"github.com/twstrike/AwESome/util"
 )
 
 type SHA1 struct{}
+
+//FIXME: this can probably be replaced by SHA1MessageReader
 type sha1Reader struct {
-	reader      io.Reader
+	reader      *SHA1MessageReader
 	currentSize uint64
 }
 
 func newSha1Reader(r io.Reader) *sha1Reader {
-	return &sha1Reader{reader: r}
+	return &sha1Reader{reader: NewSha1MessageReader(r)}
 }
 
 type sha1Context struct {
@@ -90,16 +91,6 @@ func ki(i int) uint32 {
 	return 0
 }
 
-// Fills up the buffer from the reader. The only case when it reads less is when EOF is encountered
-func readExactly(into []byte, r io.Reader) (read int, err error) {
-	for read < len(into) && err == nil {
-		var n int
-		n, err = r.Read(into[read:])
-		read += n
-	}
-	return
-}
-
 func (ctx *sha1Context) init() {
 	ctx.H0 = 0x67452301
 	ctx.H1 = 0xEFCDAB89
@@ -139,41 +130,15 @@ func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
 	return [sha1OutputSizeInBytes]byte{}
 }
 
-func (sha1 *sha1Reader) addPadding(buffer *sha1Block) {
-	w := NewSliceWriter(buffer[len(buffer)-8:])
-	binary.Write(w, binary.BigEndian, sha1.currentSize)
-}
-
 func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
-	l, _ := readExactly(buffer[:], sha1.reader)
+	l, err := sha1.reader.Read(buffer[:])
 	sha1.currentSize += uint64(l * 8)
-
-	switch {
-	case l == 0:
-		if sha1.currentSize%sha1BlockSizeInBytes == 0 {
-			buffer[l] = 0x80
-		}
-		sha1.addPadding(buffer)
-		return true
-	case l == sha1BlockSizeInBytes:
-		return false
-	case l < (sha1BlockSizeInBytes - 9):
-		buffer[l] = 0x80
-		sha1.addPadding(buffer)
-		return true
-	case l < sha1BlockSizeInBytes:
-		buffer[l] = 0x80
-		return false
-	}
-
-	return true
+	return err == io.EOF
 }
 
 func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
 	ctx := sha1Context{}
 	ctx.init()
-	into := [sha1OutputSizeInBytes]byte{}
-	readExactly(into[:], sha1.reader)
 
 	return [sha1OutputSizeInBytes]byte{}
 }
