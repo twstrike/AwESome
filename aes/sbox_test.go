@@ -18,14 +18,6 @@ func (s *SBoxTestSuite) TestInvAffineTransformation(c *C) {
 	c.Assert(invAffineTrans(byte(0xed)), Equals, byte(0xca))
 }
 
-func (s *SBoxTestSuite) Test_rotLeft(c *C) {
-	c.Assert(rotLeft(byte(0xaa), 3), Equals, byte(0x55))
-}
-
-func (s *SBoxTestSuite) Test_rotRight(c *C) {
-	c.Assert(rotRight(byte(0x55), 3), Equals, byte(0xaa))
-}
-
 func (s *SubBytesTestSuite) TestApplySBox(c *C) {
 	c.Assert(applySBox(0x00), Equals, byte(0x63))
 	c.Assert(applySBox(0x11), Equals, byte(0x82))
