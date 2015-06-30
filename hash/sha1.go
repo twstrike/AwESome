@@ -83,39 +83,43 @@ func (sha1 *sha1Reader) addPadding(buffer *sha1Block) {
 func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (hasContent bool, atEnd bool) {
 	l, err := readExactly(buffer[:], sha1.reader)
 	sha1.currentSize += uint64(l * 8)
+	atEnd = err == io.EOF
 
 	switch {
 	case l == 0:
-		if err == io.EOF {
-			if sha1.needPadding {
-				sha1.addPadding(buffer)
-				return true, true
-			}
-			return false, true
+		if err != io.EOF {
+			panic("Shouldn't happen")
 		}
 
-		panic("Shouldn't happen")
+		if sha1.needPadding {
+			sha1.addPadding(buffer)
+			hasContent = true
+		}
+		hasContent = false
 	case l == sha1BlockSizeInBytes:
 		sha1.needPadding = false
-		// add content
-		return true, err == io.EOF
+		hasContent = true
 	case l < (sha1BlockSizeInBytes - 9):
-		if err == io.EOF {
-			buffer[l] = 0x80
-			sha1.addPadding(buffer)
-			return true, true
+		if err != io.EOF {
+			panic("Shouldn't happen")
 		}
-		panic("Shouldn't happen")
+
+		buffer[l] = 0x80
+		sha1.addPadding(buffer)
+		hasContent = true
 	case l < sha1BlockSizeInBytes:
-		if err == io.EOF {
-			buffer[l] = 0x80
-			sha1.needPadding = true
-			return true, false
+		if err != io.EOF {
+			panic("Shouldn't happen")
 		}
+
+		buffer[l] = 0x80
+		sha1.needPadding = true
+		hasContent, atEnd = true, false
+	default:
 		panic("Shouldn't happen")
 	}
 
-	panic("Shouldn't happen")
+	return
 }
 
 func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
