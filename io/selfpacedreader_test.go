@@ -1,6 +1,8 @@
-package hash
+package io
 
-import "io"
+import (
+	"io"
+)
 
 type selfPacedReader struct {
 	schedule [][]byte
