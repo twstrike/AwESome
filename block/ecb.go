@@ -6,7 +6,7 @@ import (
 
 type ECB struct{}
 
-func (bm ECB) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
+func (bm ECB) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(plain)
 	cipher := make([]byte, len(plain))
 	blockSize := blockCipher.BlockSize() / 8
@@ -19,7 +19,7 @@ func (bm ECB) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
 	return cipher
 }
 
-func (bm ECB) Decrypt(key, cipher []byte, blockCipher BlockCipher) []byte {
+func (bm ECB) Decrypt(key, cipher []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(cipher)
 	plain := make([]byte, len(cipher))
 	blockSize := blockCipher.BlockSize() / 8

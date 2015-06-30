@@ -16,7 +16,7 @@ type TestVector struct {
 	blocks []Block
 }
 
-func testOnEncrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
+func testOnEncrypt(bm Mode, bc Cipher, tv TestVector, c *C) {
 	plain := ""
 	cipher := ""
 	for b := range tv.blocks {
@@ -30,7 +30,7 @@ func testOnEncrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
 	c.Assert(result, Equals, cipher)
 }
 
-func testOnDecrypt(bm BlockMode, bc BlockCipher, tv TestVector, c *C) {
+func testOnDecrypt(bm Mode, bc Cipher, tv TestVector, c *C) {
 	plain := ""
 	cipher := ""
 	for b := range tv.blocks {

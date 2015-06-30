@@ -21,7 +21,7 @@ func xor(a, b []byte) []byte {
 	return ret
 }
 
-func (bm CBC) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
+func (bm CBC) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(plain)
 	cipher := make([]byte, len(plain))
 	blockSize := blockCipher.BlockSize() / 8
@@ -37,7 +37,7 @@ func (bm CBC) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
 	return cipher
 }
 
-func (bm CBC) Decrypt(key, cipher []byte, blockCipher BlockCipher) []byte {
+func (bm CBC) Decrypt(key, cipher []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(cipher)
 	plain := make([]byte, len(cipher))
 	blockSize := blockCipher.BlockSize() / 8

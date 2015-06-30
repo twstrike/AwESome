@@ -17,7 +17,7 @@ func inc(d []byte) {
 	incAt(d, len(d)-1)
 }
 
-func (bm CTR) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
+func (bm CTR) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(plain)
 	cipher := make([]byte, len(plain))
 	blockSize := blockCipher.BlockSize() / 8
@@ -33,6 +33,6 @@ func (bm CTR) Encrypt(key, plain []byte, blockCipher BlockCipher) []byte {
 	return cipher
 }
 
-func (bm CTR) Decrypt(key, cipher []byte, blockCipher BlockCipher) []byte {
+func (bm CTR) Decrypt(key, cipher []byte, blockCipher Cipher) []byte {
 	return bm.Encrypt(key, cipher, blockCipher)
 }
