@@ -51,3 +51,17 @@ func (s *SHA1Suite) TestReadExactlySubsequentCalls(c *C) {
 	c.Assert(n, Equals, 1)
 	c.Assert(err, DeepEquals, io.EOF)
 }
+
+func (s *SHA1Suite) TestReadExactlyBehavior(c *C) {
+	reader := newSelfPacedReader([][]byte{
+		[]byte{0x01, 0x02},
+		[]byte{0x03},
+		[]byte{0x04, 0x05},
+	})
+
+	into := [4]byte{}
+	n, err := readExactly(into[:], reader)
+	c.Assert(into[:], DeepEquals, []byte{0x01, 0x02, 0x03, 0x04})
+	c.Assert(n, Equals, len(into))
+	c.Assert(err, Equals, nil)
+}
