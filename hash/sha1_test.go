@@ -28,3 +28,26 @@ func (s *SHA1Suite) TestReadExactlyWithEOFError(c *C) {
 	c.Assert(n, Equals, len(input))
 	c.Assert(err, DeepEquals, io.EOF)
 }
+
+func (s *SHA1Suite) TestReadExactlySubsequentCalls(c *C) {
+	input := []byte{0x11, 0x12, 0x13, 0x14, 0x15}
+	reader := bytes.NewBuffer(input)
+	first := [2]byte{}
+
+	n, err := readExactly(first[:], reader)
+	c.Assert(first[:], DeepEquals, input[:2])
+	c.Assert(n, Equals, len(first))
+	c.Assert(err, DeepEquals, nil)
+
+	second := [2]byte{}
+	n, err = readExactly(second[:], reader)
+	c.Assert(second[:], DeepEquals, input[2:4])
+	c.Assert(n, Equals, len(second))
+	c.Assert(err, DeepEquals, nil)
+
+	third := [2]byte{}
+	n, err = readExactly(third[:], reader)
+	c.Assert(third[:], DeepEquals, []byte{0x15, 0x00})
+	c.Assert(n, Equals, 1)
+	c.Assert(err, DeepEquals, io.EOF)
+}
