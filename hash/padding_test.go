@@ -11,7 +11,7 @@ type SHA1PaddingSuite struct{}
 
 var _ = Suite(&SHA1PaddingSuite{})
 
-func (s *SHA1PaddingSuite) TestNoPaddingNecessary(c *C) {
+func (s *SHA1PaddingSuite) TestPaddingNecessary(c *C) {
 	r, _ := hex.DecodeString("0102030405060708" +
 		"1112131415161718" +
 		"2122232425262728" +
@@ -21,10 +21,10 @@ func (s *SHA1PaddingSuite) TestNoPaddingNecessary(c *C) {
 		"6162636465666768" +
 		"7172737475767778")
 
-	reader := sha1Reader{bytes.NewBuffer(r), 0, false}
+	reader := newSha1Reader(bytes.NewBuffer(r))
 	var buffer sha1Block
 
-	hasContent, ended := reader.readWithPadding(&buffer)
+	ended := reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
 		0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
@@ -36,19 +36,28 @@ func (s *SHA1PaddingSuite) TestNoPaddingNecessary(c *C) {
 		0x71, 0x72, 0x73, 0x74, 0x75, 0x76, 0x77, 0x78,
 	})
 
-	c.Assert(hasContent, Equals, true)
 	c.Assert(ended, Equals, false)
 
-	hasContent, ended = reader.readWithPadding(&buffer)
-	c.Assert(hasContent, Equals, false)
+	buffer = sha1Block{}
+	ended = reader.readWithPadding(&buffer)
+	c.Assert(buffer[:], DeepEquals, []byte{
+		0x80, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
+		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0x00,
+	})
 	c.Assert(ended, Equals, true)
 }
 
 func (s *SHA1PaddingSuite) TestPaddingSingleBlock(c *C) {
 	r, _ := hex.DecodeString("6162636465")
-	reader := sha1Reader{bytes.NewBuffer(r), 0, false}
+	reader := newSha1Reader(bytes.NewBuffer(r))
 	var buffer sha1Block
-	_, result := reader.readWithPadding(&buffer)
+	result := reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x61, 0x62, 0x63, 0x64, 0x65, 0x80, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -72,9 +81,9 @@ func (s *SHA1PaddingSuite) TestPaddingSecondBlock(c *C) {
 		"6162636465666768" +
 		"7172737475767778" +
 		"0102")
-	reader := sha1Reader{bytes.NewBuffer(r), 0, false}
+	reader := newSha1Reader(bytes.NewBuffer(r))
 	var buffer sha1Block
-	_, result := reader.readWithPadding(&buffer)
+	result := reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
 		0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
@@ -88,7 +97,7 @@ func (s *SHA1PaddingSuite) TestPaddingSecondBlock(c *C) {
 	c.Assert(result, Equals, false)
 
 	buffer = sha1Block{}
-	_, result = reader.readWithPadding(&buffer)
+	result = reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x01, 0x02, 0x80, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -111,9 +120,9 @@ func (s *SHA1PaddingSuite) TestPaddingBlockSizeLimit(c *C) {
 		"5152535455565758" +
 		"6162636465666768" +
 		"71727374757677")
-	reader := sha1Reader{bytes.NewBuffer(r), 0, false}
+	reader := newSha1Reader(bytes.NewBuffer(r))
 	var buffer sha1Block
-	_, result := reader.readWithPadding(&buffer)
+	result := reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
 		0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
@@ -127,7 +136,7 @@ func (s *SHA1PaddingSuite) TestPaddingBlockSizeLimit(c *C) {
 	c.Assert(result, Equals, false)
 
 	buffer = sha1Block{}
-	_, result = reader.readWithPadding(&buffer)
+	result = reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
@@ -157,11 +166,11 @@ func (s *SHA1PaddingSuite) TestPaddingInputHavingMultipleBlocks(c *C) {
 	}
 
 	r, _ := hex.DecodeString(t[:len(t)-2])
-	reader := sha1Reader{bytes.NewBuffer(r), 0, false}
+	reader := newSha1Reader(bytes.NewBuffer(r))
 
 	for i := 0; i < 4; i++ {
 		buffer := sha1Block{}
-		_, ended := reader.readWithPadding(&buffer)
+		ended := reader.readWithPadding(&buffer)
 
 		c.Assert(buffer[:], DeepEquals, []byte{
 			0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
@@ -177,7 +186,7 @@ func (s *SHA1PaddingSuite) TestPaddingInputHavingMultipleBlocks(c *C) {
 	}
 
 	var buffer sha1Block
-	_, ended := reader.readWithPadding(&buffer)
+	ended := reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x01, 0x02, 0x03, 0x04, 0x05, 0x06, 0x07, 0x08,
 		0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18,
@@ -191,7 +200,7 @@ func (s *SHA1PaddingSuite) TestPaddingInputHavingMultipleBlocks(c *C) {
 	c.Assert(ended, Equals, false)
 
 	buffer = sha1Block{}
-	_, ended = reader.readWithPadding(&buffer)
+	ended = reader.readWithPadding(&buffer)
 	c.Assert(buffer[:], DeepEquals, []byte{
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,
 		0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00,

@@ -11,7 +11,10 @@ type SHA1 struct{}
 type sha1Reader struct {
 	reader      io.Reader
 	currentSize uint64
-	needPadding bool
+}
+
+func newSha1Reader(r io.Reader) *sha1Reader {
+	return &sha1Reader{reader: r}
 }
 
 type sha1Context struct {
@@ -22,7 +25,7 @@ type sha1Context struct {
 }
 
 func (sha1 SHA1) Sum(r io.Reader) []byte {
-	reader := sha1Reader{r, 0, false}
+	reader := newSha1Reader(r)
 	result := reader.sum()
 	return result[:]
 }
@@ -141,46 +144,29 @@ func (sha1 *sha1Reader) addPadding(buffer *sha1Block) {
 	binary.Write(w, binary.BigEndian, sha1.currentSize)
 }
 
-func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (hasContent bool, atEnd bool) {
-	l, err := readExactly(buffer[:], sha1.reader)
+func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
+	l, _ := readExactly(buffer[:], sha1.reader)
 	sha1.currentSize += uint64(l * 8)
-	atEnd = err == io.EOF
 
 	switch {
 	case l == 0:
-		if err != io.EOF {
-			panic("Shouldn't happen")
+		if sha1.currentSize%sha1BlockSizeInBytes == 0 {
+			buffer[l] = 0x80
 		}
-
-		if sha1.needPadding {
-			sha1.addPadding(buffer)
-			hasContent = true
-		}
-		hasContent = false
+		sha1.addPadding(buffer)
+		return true
 	case l == sha1BlockSizeInBytes:
-		sha1.needPadding = false
-		hasContent = true
+		return false
 	case l < (sha1BlockSizeInBytes - 9):
-		if err != io.EOF {
-			panic("Shouldn't happen")
-		}
-
 		buffer[l] = 0x80
 		sha1.addPadding(buffer)
-		hasContent = true
+		return true
 	case l < sha1BlockSizeInBytes:
-		if err != io.EOF {
-			panic("Shouldn't happen")
-		}
-
 		buffer[l] = 0x80
-		sha1.needPadding = true
-		hasContent, atEnd = true, false
-	default:
-		panic("Shouldn't happen")
+		return false
 	}
 
-	return
+	return true
 }
 
 func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
