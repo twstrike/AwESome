@@ -37,9 +37,8 @@ var sha1TestCases = []TestCase{
 }
 
 func (s *SHA1Suite) TestSHA1(c *C) {
-	c.Skip("not implemented")
-	sha1 := SHA1{}
 	for _, tc := range sha1TestCases {
+		sha1 := SHA1{}
 		testOnSum(sha1, tc, c)
 	}
 }

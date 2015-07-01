@@ -1,6 +1,7 @@
 package hash
 
 import (
+	"encoding/binary"
 	"io"
 
 	"github.com/twstrike/AwESome/util"
@@ -127,7 +128,7 @@ func (ctx *sha1Context) update(mN [sha1BlockSizeInBytes]byte) {
 }
 
 func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
-	return [sha1OutputSizeInBytes]byte{}
+	return uint32ToSHA1Output([5]uint32{ctx.H0, ctx.H1, ctx.H2, ctx.H3, ctx.H4})
 }
 
 func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
@@ -140,7 +141,15 @@ func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
 	ctx := sha1Context{}
 	ctx.init()
 
-	return [sha1OutputSizeInBytes]byte{}
+	for {
+		buffer := sha1Block{}
+		atEnd := sha1.readWithPadding(&buffer)
+		ctx.update(buffer)
+		if atEnd {
+			break
+		}
+	}
+	return ctx.final()
 }
 
 func addUint32Modulo(a, b uint32) uint32 {
@@ -153,4 +162,12 @@ func sumUint32Modulo(arr []uint32) uint32 {
 		result = addUint32Modulo(result, arr[i])
 	}
 	return result
+}
+
+func uint32ToSHA1Output(h [5]uint32) (result [sha1OutputSizeInBytes]byte) {
+	w := NewSliceWriter(result[:])
+	for i := range h {
+		binary.Write(w, binary.BigEndian, h[i])
+	}
+	return
 }
