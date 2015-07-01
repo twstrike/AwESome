@@ -9,16 +9,6 @@ import (
 
 type SHA1 struct{}
 
-//FIXME: this can probably be replaced by SHA1MessageReader
-type sha1Reader struct {
-	reader      *SHA1MessageReader
-	currentSize uint64
-}
-
-func newSha1Reader(r io.Reader) *sha1Reader {
-	return &sha1Reader{reader: NewSha1MessageReader(r)}
-}
-
 type sha1Context struct {
 	A, B, C, D, E      uint32
 	H0, H1, H2, H3, H4 uint32
@@ -27,7 +17,7 @@ type sha1Context struct {
 }
 
 func (sha1 SHA1) Sum(r io.Reader) []byte {
-	reader := newSha1Reader(r)
+	reader := NewSha1MessageReader(r)
 	result := reader.sum()
 	return result[:]
 }
@@ -38,10 +28,6 @@ const sha1BlockSize = 512
 const sha1BlockSizeInBytes = sha1BlockSize / 8
 
 type sha1Block [sha1BlockSizeInBytes]byte
-
-func circularLeftShift(w uint32, n int) uint32 {
-	return w
-}
 
 func f0to19(b, c, d uint32) uint32 {
 	return (b & c) | ((^b) & d)
@@ -131,13 +117,12 @@ func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
 	return uint32ToSHA1Output([5]uint32{ctx.H0, ctx.H1, ctx.H2, ctx.H3, ctx.H4})
 }
 
-func (sha1 *sha1Reader) readWithPadding(buffer *sha1Block) (atEnd bool) {
-	l, err := sha1.reader.Read(buffer[:])
-	sha1.currentSize += uint64(l * 8)
+func (sha1 *SHA1MessageReader) readWithPadding(buffer *sha1Block) (atEnd bool) {
+	_, err := sha1.Read(buffer[:])
 	return err == io.EOF
 }
 
-func (sha1 *sha1Reader) sum() [sha1OutputSizeInBytes]byte {
+func (sha1 *SHA1MessageReader) sum() [sha1OutputSizeInBytes]byte {
 	ctx := sha1Context{}
 	ctx.init()
 
