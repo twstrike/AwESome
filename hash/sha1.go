@@ -15,8 +15,11 @@ type sha1Block [sha1BlockSizeInBytes]byte
 // SHA1 is a hash.Hash that computes the SHA1 message digest.
 type SHA1 struct{}
 
-func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
-	return uint32ToSHA1Output([5]uint32{ctx.H0, ctx.H1, ctx.H2, ctx.H3, ctx.H4})
+// Sum returns the SHA1 digest for the message in r.
+func (sha1 SHA1) Sum(r io.Reader) []byte {
+	message := NewSha1MessageReader(r)
+	digest := compute(message)
+	return digest[:]
 }
 
 func (sha1 *SHA1MessageReader) readWithPadding(buffer *sha1Block) (atEnd bool) {
@@ -24,15 +27,16 @@ func (sha1 *SHA1MessageReader) readWithPadding(buffer *sha1Block) (atEnd bool) {
 	return err == io.EOF
 }
 
-func (sha1 *SHA1MessageReader) sum() [sha1OutputSizeInBytes]byte {
+func compute(msg *SHA1MessageReader) [sha1OutputSizeInBytes]byte {
 	ctx := sha1Context{}
 	ctx.init()
 
+	block := sha1Block{}
+
 	for {
-		buffer := sha1Block{}
-		atEnd := sha1.readWithPadding(&buffer)
-		ctx.update(buffer)
-		if atEnd {
+		_, err := msg.Read(block[:])
+		ctx.update(block)
+		if err != nil {
 			break
 		}
 	}
