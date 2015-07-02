@@ -12,6 +12,15 @@ type SHA1MessageReaderSuite struct{}
 
 var _ = Suite(&SHA1MessageReaderSuite{})
 
+func (s *SHA1MessageReaderSuite) TestFailsIfBufferIsTooShort(c *C) {
+	reader := NewSha1MessageReader(bytes.NewBuffer([]byte{}))
+
+	buffer := sha1Block{}
+	n, err := reader.Read(buffer[1:])
+	c.Assert(n, Equals, 0)
+	c.Assert(err, Equals, io.ErrShortBuffer)
+}
+
 func (s *SHA1MessageReaderSuite) TestPaddingNecessary(c *C) {
 	input, _ := hex.DecodeString("0102030405060708" +
 		"1112131415161718" +

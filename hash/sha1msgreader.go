@@ -31,6 +31,10 @@ func emptySHA1Block(p []byte) {
 
 // Read reads exactly sha1BlockSizeInBytes bytes into p
 func (r *SHA1MessageReader) Read(p []byte) (int, error) {
+	if len(p) < sha1BlockSizeInBytes {
+		return 0, io.ErrShortBuffer
+	}
+
 	b := p[:sha1BlockSizeInBytes]
 
 	emptySHA1Block(b)
