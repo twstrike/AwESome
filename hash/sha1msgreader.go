@@ -38,8 +38,12 @@ func (r *SHA1MessageReader) Read(p []byte) (int, error) {
 	b := p[:sha1BlockSizeInBytes]
 
 	emptySHA1Block(b)
-	l, _ := r.r.Read(b)
+	l, err := r.r.Read(b)
 	r.size += uint64(l * 8)
+
+	if err != nil && err != io.EOF {
+		return l, err
+	}
 
 	switch {
 	case l == 0:
