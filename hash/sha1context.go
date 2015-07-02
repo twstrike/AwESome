@@ -1,6 +1,10 @@
 package hash
 
-import "github.com/twstrike/AwESome/util"
+import (
+	"fmt"
+
+	"github.com/twstrike/AwESome/util"
+)
 
 const k0to19 = uint32(0x5A827999)
 const k20to39 = uint32(0x6ED9EBA1)
@@ -55,6 +59,8 @@ func (ctx *sha1Context) final() [sha1OutputSizeInBytes]byte {
 
 func ki(i int) uint32 {
 	switch {
+	default:
+		panic(fmt.Sprintf("invalid i: ", i))
 	case 0 <= i && i <= 19:
 		return k0to19
 	case 20 <= i && i <= 39:
@@ -64,7 +70,6 @@ func ki(i int) uint32 {
 	case 60 <= i && i <= 79:
 		return k60to79
 	}
-	return 0
 }
 
 func f0to19(b, c, d uint32) uint32 {
@@ -85,6 +90,8 @@ func f60to79(b, c, d uint32) uint32 {
 
 func fi(i int, b, c, d uint32) uint32 {
 	switch {
+	default:
+		panic(fmt.Sprintf("invalid i: ", i))
 	case 0 <= i && i <= 19:
 		return f0to19(b, c, d)
 	case 20 <= i && i <= 39:
@@ -94,5 +101,4 @@ func fi(i int, b, c, d uint32) uint32 {
 	case 60 <= i && i <= 79:
 		return f60to79(b, c, d)
 	}
-	return 0
 }
