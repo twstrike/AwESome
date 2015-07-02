@@ -22,9 +22,9 @@ type repeatReader struct {
 func (st repeatReader) potentialEOF() error {
 	if st.at == len(st.from) && st.count == 0 {
 		return io.EOF
-	} else {
-		return nil
 	}
+
+	return nil
 }
 
 func (st *repeatReader) Read(into []byte) (n int, err error) {

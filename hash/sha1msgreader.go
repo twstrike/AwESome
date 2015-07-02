@@ -4,18 +4,18 @@ import (
 	"encoding/binary"
 	"io"
 
-	. "github.com/twstrike/AwESome/io"
+	aio "github.com/twstrike/AwESome/io"
 )
 
 // SHA1MessageReader implements SHA-1 padding for an io.Reader object.
 type SHA1MessageReader struct {
-	r    *TrustworthyReader
+	r    *aio.TrustworthyReader
 	size uint64
 }
 
 // NewSha1MessageReader returns new SHA1MessageReader wrapping r
 func NewSha1MessageReader(r io.Reader) *SHA1MessageReader {
-	return &SHA1MessageReader{r: NewTrustworthyReader(r)}
+	return &SHA1MessageReader{r: aio.NewTrustworthyReader(r)}
 }
 
 func (r *SHA1MessageReader) addMessageLength(buffer []byte) {

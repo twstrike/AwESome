@@ -7,6 +7,7 @@ import (
 	"github.com/twstrike/AwESome/util"
 )
 
+// SHA1 is a hash.Hash that computes the SHA1 message digest.
 type SHA1 struct{}
 
 type sha1Context struct {
@@ -16,6 +17,7 @@ type sha1Context struct {
 	temp               uint32
 }
 
+// Sum returns the SHA1 digest for the message in r.
 func (sha1 SHA1) Sum(r io.Reader) []byte {
 	reader := NewSha1MessageReader(r)
 	result := reader.sum()
@@ -59,21 +61,21 @@ func fi(i int, b, c, d uint32) uint32 {
 	return 0
 }
 
-const K0to19 = uint32(0x5A827999)
-const K20to39 = uint32(0x6ED9EBA1)
-const K40to59 = uint32(0x8F1BBCDC)
-const K60to79 = uint32(0xCA62C1D6)
+const k0to19 = uint32(0x5A827999)
+const k20to39 = uint32(0x6ED9EBA1)
+const k40to59 = uint32(0x8F1BBCDC)
+const k60to79 = uint32(0xCA62C1D6)
 
 func ki(i int) uint32 {
 	switch {
 	case 0 <= i && i <= 19:
-		return K0to19
+		return k0to19
 	case 20 <= i && i <= 39:
-		return K20to39
+		return k20to39
 	case 40 <= i && i <= 59:
-		return K40to59
+		return k40to59
 	case 60 <= i && i <= 79:
-		return K60to79
+		return k60to79
 	}
 	return 0
 }

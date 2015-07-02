@@ -7,6 +7,7 @@ type wrappedByteSlice struct {
 	from  int
 }
 
+// NewSliceWriter returns a new io.Writter that wraps b
 func NewSliceWriter(b []byte) io.Writer {
 	return &wrappedByteSlice{slice: b}
 }
