@@ -28,18 +28,21 @@ func (sha1 *SHA1MessageReader) readWithPadding(buffer *sha1Block) (atEnd bool) {
 }
 
 func compute(msg *SHA1MessageReader) [sha1OutputSizeInBytes]byte {
+	var err error
+	block := sha1Block{}
+
 	ctx := sha1Context{}
 	ctx.init()
 
-	block := sha1Block{}
-
-	for {
-		_, err := msg.Read(block[:])
+	for err == nil {
+		_, err = msg.Read(block[:])
 		ctx.update(block)
-		if err != nil {
-			break
-		}
 	}
+
+	if err != nil && err != io.EOF {
+		panic(err)
+	}
+
 	return ctx.final()
 }
 
