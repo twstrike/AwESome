@@ -7,8 +7,6 @@ import (
 	. "github.com/twstrike/AwESome/io"
 )
 
-var emptySHA1Block = sha1Block{}
-
 // SHA1MessageReader implements SHA-1 padding for an io.Reader object.
 type SHA1MessageReader struct {
 	r    *TrustworthyReader
@@ -25,10 +23,18 @@ func (r *SHA1MessageReader) addMessageLength(buffer []byte) {
 	binary.Write(w, binary.BigEndian, r.size)
 }
 
+func emptySHA1Block(p []byte) {
+	for i := range p {
+		p[i] = 0
+	}
+}
+
 // Read reads exactly sha1BlockSizeInBytes bytes into p
 func (r *SHA1MessageReader) Read(p []byte) (int, error) {
-	copy(p[:sha1BlockSizeInBytes], emptySHA1Block[:])
-	l, _ := r.r.Read(p[:sha1BlockSizeInBytes])
+	b := p[:sha1BlockSizeInBytes]
+
+	emptySHA1Block(b)
+	l, _ := r.r.Read(b)
 	r.size += uint64(l * 8)
 
 	switch {
