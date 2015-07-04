@@ -1,5 +1,6 @@
 package aes
 
+// DecryptBytes decrypt the bytes in the cipher text with the key and returns the result
 func DecryptBytes(key, cipher []byte) []byte {
 	k := parseKeyFromBytes(key)
 	c := Block{}
@@ -8,6 +9,7 @@ func DecryptBytes(key, cipher []byte) []byte {
 	return wordsToBytes(Decrypt(k, c))
 }
 
+// Decrypt will decrypt the bytes in the cipher text with the key and returns the result
 func Decrypt(key Key, cipher Block) Block {
 	schedule := scheduleFor(key)
 	state := cipher.toState()

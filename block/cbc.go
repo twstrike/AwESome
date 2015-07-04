@@ -4,6 +4,7 @@ import (
 	"bytes"
 )
 
+// CBC contains the information necessary to run the CBC block mode
 type CBC struct {
 	IV []byte
 }
@@ -21,6 +22,7 @@ func xor(a, b []byte) []byte {
 	return ret
 }
 
+// Encrypt encrypts the plain text with the key using the provided block cipher and CBC block mode
 func (bm CBC) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(plain)
 	cipher := make([]byte, len(plain))
@@ -37,6 +39,7 @@ func (bm CBC) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	return cipher
 }
 
+// Decrypt decrypts the cipher text with the key using the provided block cipher and CBC block mode
 func (bm CBC) Decrypt(key, cipher []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(cipher)
 	plain := make([]byte, len(cipher))

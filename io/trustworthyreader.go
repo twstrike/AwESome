@@ -9,6 +9,7 @@ type TrustworthyReader struct {
 	r io.Reader
 }
 
+// NewTrustworthyReader creates a new TrustworthyReader
 func NewTrustworthyReader(r io.Reader) *TrustworthyReader {
 	return &TrustworthyReader{r}
 }

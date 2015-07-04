@@ -1,5 +1,6 @@
 package aes
 
+// Represent a Block Cipher that can encrypt and decrypt a fixed size byte block
 var BlockCipher = blockCipher{}
 
 type blockCipher struct{}

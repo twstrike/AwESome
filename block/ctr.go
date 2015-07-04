@@ -2,6 +2,7 @@ package block
 
 import "bytes"
 
+// CTR contains the information necessary to run the CTR block mode
 type CTR struct {
 	IV []byte
 }
@@ -17,6 +18,7 @@ func inc(d []byte) {
 	incAt(d, len(d)-1)
 }
 
+// Encrypt encrypts the plain text with the key using the provided block cipher and CTR block mode
 func (bm CTR) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	reader := bytes.NewBuffer(plain)
 	cipher := make([]byte, len(plain))
@@ -33,6 +35,7 @@ func (bm CTR) Encrypt(key, plain []byte, blockCipher Cipher) []byte {
 	return cipher
 }
 
+// Decrypt decrypts the cipher text with the key using the provided block cipher and CTR block mode
 func (bm CTR) Decrypt(key, cipher []byte, blockCipher Cipher) []byte {
 	return bm.Encrypt(key, cipher, blockCipher)
 }
