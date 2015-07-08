@@ -16,10 +16,5 @@ func NewTrustworthyReader(r io.Reader) *TrustworthyReader {
 
 // Reads exactly len(p) bytes at once, unless EOF is encountered.
 func (r TrustworthyReader) Read(p []byte) (read int, err error) {
-	for read < len(p) && err == nil {
-		var n int
-		n, err = r.r.Read(p[read:])
-		read += n
-	}
-	return
+	return io.ReadFull(r.r, p)
 }
