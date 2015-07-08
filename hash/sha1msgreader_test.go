@@ -11,7 +11,7 @@ import (
 type misbehavedReader struct{}
 
 func (r misbehavedReader) Read(p []byte) (int, error) {
-	return 0, io.ErrNoProgress
+	return 0, io.ErrUnexpectedEOF
 }
 
 type SHA1MessageReaderSuite struct{}
@@ -33,7 +33,7 @@ func (s *SHA1MessageReaderSuite) TestReturnsAnyUnexpectedErrorFromTheWrappedRead
 	buffer := sha1Block{}
 	n, err := reader.Read(buffer[:])
 	c.Assert(n, Equals, 0)
-	c.Assert(err, Equals, io.ErrNoProgress)
+	c.Assert(err, Equals, io.ErrUnexpectedEOF)
 }
 
 func (s *SHA1MessageReaderSuite) TestPaddingNecessary(c *C) {

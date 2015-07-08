@@ -33,7 +33,7 @@ func (s *TrustworthyReaderSuite) TestReadExactlyWithEOFError(c *C) {
 	n, err := reader.Read(into[:])
 	c.Assert(into[:], DeepEquals, []byte{0x11, 0x12, 0x11, 0x12, 0x00})
 	c.Assert(n, Equals, len(input))
-	c.Assert(err, DeepEquals, io.ErrUnexpectedEOF)
+	c.Assert(err, DeepEquals, io.EOF)
 }
 
 func (s *TrustworthyReaderSuite) TestReadExactlySubsequentCalls(c *C) {
@@ -56,7 +56,7 @@ func (s *TrustworthyReaderSuite) TestReadExactlySubsequentCalls(c *C) {
 	n, err = reader.Read(third[:])
 	c.Assert(third[:], DeepEquals, []byte{0x15, 0x00})
 	c.Assert(n, Equals, 1)
-	c.Assert(err, DeepEquals, io.ErrUnexpectedEOF)
+	c.Assert(err, DeepEquals, io.EOF)
 }
 
 func (s *TrustworthyReaderSuite) TestReadExactlyBehavior(c *C) {

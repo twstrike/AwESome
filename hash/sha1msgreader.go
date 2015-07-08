@@ -41,7 +41,7 @@ func (r *SHA1MessageReader) Read(p []byte) (int, error) {
 	l, err := r.r.Read(b)
 	r.size += uint64(l * 8)
 
-	if err != nil && err != io.EOF && err != io.ErrUnexpectedEOF {
+	if err != nil && err != io.EOF {
 		return l, err
 	}
 
