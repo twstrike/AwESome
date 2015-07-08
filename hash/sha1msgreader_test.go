@@ -3,6 +3,7 @@ package hash
 import (
 	"bytes"
 	"encoding/hex"
+	"errors"
 	"io"
 
 	. "gopkg.in/check.v1"
@@ -10,8 +11,10 @@ import (
 
 type misbehavedReader struct{}
 
+var anyErrorNotEOF = errors.New("any error")
+
 func (r misbehavedReader) Read(p []byte) (int, error) {
-	return 0, io.ErrUnexpectedEOF
+	return 0, anyErrorNotEOF
 }
 
 type SHA1MessageReaderSuite struct{}
@@ -33,7 +36,7 @@ func (s *SHA1MessageReaderSuite) TestReturnsAnyUnexpectedErrorFromTheWrappedRead
 	buffer := sha1Block{}
 	n, err := reader.Read(buffer[:])
 	c.Assert(n, Equals, 0)
-	c.Assert(err, Equals, io.ErrUnexpectedEOF)
+	c.Assert(err, Equals, anyErrorNotEOF)
 }
 
 func (s *SHA1MessageReaderSuite) TestPaddingNecessary(c *C) {
