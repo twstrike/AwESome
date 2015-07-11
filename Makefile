@@ -1,5 +1,8 @@
 default: deps lint test
 
+bench:
+	go test -v ./... -check.b
+
 lint:
 	golint ./...
 
