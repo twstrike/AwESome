@@ -17,6 +17,15 @@ func (s *DecryptSuite) TestDecrypt(c *C) {
 	c.Check(expected, DeepEquals, Decrypt(key, cipher))
 }
 
+func (*DecryptSuite) BenchmarkDecrypt128(c *C) {
+	cipher := Block{0x3925841d, 0x02dc09fb, 0xdc118597, 0x196a0b32}
+	key := Key128{0x2b7e1516, 0x28aed2a6, 0xabf71588, 0x09cf4f3c}
+
+	for i := 0; i < c.N; i++ {
+		Decrypt(key, cipher)
+	}
+}
+
 func (s *DecryptSuite) TestDecryptBytes128(c *C) {
 	//See AES spec, Appendix B – Cipher Example
 	cipher := []byte{
