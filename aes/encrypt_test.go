@@ -34,6 +34,15 @@ func (s *EncryptSuite) TestEncrypt192(c *C) {
 	c.Check(expected, DeepEquals, Encrypt(key, plain))
 }
 
+func (*EncryptSuite) BenchmarkEncrypt192(c *C) {
+	plain := Block{0x00112233, 0x44556677, 0x8899aabb, 0xccddeeff}
+	key := Key192{0x00010203, 0x04050607, 0x08090a0b, 0x0c0d0e0f, 0x10111213, 0x14151617}
+
+	for i := 0; i < c.N; i++ {
+		Encrypt(key, plain)
+	}
+}
+
 func (s *EncryptSuite) TestEncryptBytes128(c *C) {
 	//See AES spec, Appendix B – Cipher Example
 	plain := []byte{
